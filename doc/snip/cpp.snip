@@ -1,0 +1,473 @@
+snippet     if
+abbr        if () ...
+options     word
+  if (${1:#:condition}) ${0:TARGET}
+
+snippet     for
+abbr        for () ...
+options     word
+  for (${1:int} ${2:i} = ${3:0}; $2 < ${4}; ++$2) ${0:TARGET}
+
+snippet     for_CPP11
+abbr        for (:) ...
+options     word
+  for (${1:auto&& }${2:var} : ${3:container}) ${0:TARGET}
+
+snippet     while
+abbr        while () ...
+options     word
+  while (${1:#:condition}) ${0:TARGET}
+
+snippet     #include
+abbr        #include <bits/stdc++.h>
+options     word
+  #include <${1:bits/stdc++}.h>${0}
+
+snippet     using namespace std
+options     word
+abbr        using namespace std
+alias       std
+  using namespace std;${0}
+
+snippet     using ll
+abbr        using ll = long long
+options     word
+  using ll = long long;${0}
+
+snippet     using V
+abbr        using V = vector...
+options     word
+  using ${1:V} = vector<${2:int}>;${0}
+
+snippet     using P
+abbr        using P = pair...
+options     word
+  using ${1:P} = pair<${2:int}, ${3:int}>;${0}
+
+snippet     using PQ
+abbr        using PQ = priority_queue...
+options     word
+  using ${1:PQ} = priority_queue<${2:int}${3:, V<$2>, greater<$2>}>;${0}
+
+snippet     const
+abbr        const T x = ...
+options     word
+  const ${1:int} ${2:MOD} = ${3:1e9 + 7};
+
+snippet     cin
+abbr        cin >> ...
+options     word
+alias       in
+  cin >> ${1:TARGET};${0}
+
+snippet     cout
+abbr        cout << ... << endl;
+options     word
+alias       out
+  cout << ${1:${2:${3:TARGET\\\} << \}endl};${0}
+
+snippet     continue
+abbr        continue
+options     word
+  continue;${0}
+
+snippet     break
+abbr        break
+options     word
+  break;${0}
+
+snippet     return
+abbr        return
+options     word
+  return ${0};
+
+snippet     accumulate
+abbr        accumulate(begin(v), end(v), init, binary_op)
+options     word
+  accumulate(begin(${1:v}), end($1), ${2:1}${3:, [](int acc, int i) { return acc * i; \}})${0}
+
+snippet     binary_search
+abbr        binary_search(begin(v), end(v), val)
+options     word
+  binary_search(begin(${1:v}), end($1), ${2:val})${0}
+
+snippet     copy
+abbr        copy(begin(v), end(v) - 1, ostream_iterator<T>(cout, " "))
+options     head
+  copy(begin(${1:v}), end($1)${2: - 1}, ostream_iterator<${3:int}>(cout, "${4: }"));${0}
+
+snippet     lower_bound
+abbr        lower_bound(begin(v), end(v), val)
+options     word
+  lower_bound(begin(${1:v}), end($1), ${2:val})${0}
+
+snippet     upper_bound
+abbr        upper_bound(begin(v), end(v), val)
+options     word
+  upper_bound(begin(${1:v}), end($1), ${2:val})${0}
+
+snippet     memset
+abbr        memset(arr, val, sizeof(arr))
+options     word
+  memset(${1:arr}, ${2:val}, sizeof($1));${0}
+
+snippet     sort
+abbr        sort(begin(v), end(v))
+options     word
+  sort(begin(${1:v}), end($1)${2:, greater<${3:int\}>()});${0}
+
+snippet     vector
+abbr        vector<T>
+options     word
+  vector<${1:int}>${0}
+
+snippet     map
+abbr        map<T1, T2>
+options     word
+  map<${1:int}, ${2:int}>${0}
+
+snippet     set
+abbr        set<T>
+options     word
+  set<${1:int}>${0}
+
+snippet     pair
+abbr        pair<T1, T2>
+options     word
+  pair<${1:int}, ${2:int}>${0}
+
+snippet     queue
+abbr        queue<T>
+options     word
+  queue<${1:int}>${0}
+
+snippet     priority_queue
+abbr        priority_queue<T, vector<T>, greater<T> >
+options     word
+  priority_queue<${1:int}${2:, vector<$1>, greater<$1> }>${0}
+
+snippet     assign
+abbr        assign
+options     word
+  assign(${1}, ${2})${0}
+
+snippet     back
+abbr        back()
+options     word
+  back()${0}
+
+snippet     begin
+abbr        begin()
+options     word
+  begin(${1})${0}
+
+snippet     end
+abbr        end()
+options     word
+  end(${1})${0}
+
+snippet     erase
+abbr        erase()
+options     word
+  erase(begin(${1:v}), end($1))${0}
+
+snippet     first
+abbr        first
+options     word
+  first${0}
+
+snippet     front
+abbr        front()
+options     word
+  front()${0}
+
+snippet     greater
+abbr        greater<int>()
+options     word
+  greater<${1:int}>${2:()}${0}
+
+snippet     insert
+abbr        insert()
+options     word
+  insert(${1})${0}
+
+snippet     length
+abbr        length()
+options     word
+  length()${0}
+
+snippet     *max_element
+abbr        *max_element(begin(v), end(v))
+options     word
+  *max_element(begin(${1:v}), end($1))${0}
+
+snippet     *min_element
+abbr        *min_element(begin(v), end(v))
+options     word
+  *min_element(begin(${1:v}), end($1))${0}
+
+snippet     pop
+abbr        pop()
+options     word
+  pop()${0}
+
+snippet     push
+abbr        push
+options     word
+  push(${1})${0}
+
+snippet     push_back
+abbr        push_back()
+options     word
+  push_back(${1})${0}
+
+snippet     push_front
+abbr        push_front()
+options     word
+  push_front(${1})${0}
+
+snippet     resize
+abbr        resize()
+options     word
+  resize(${1})${0}
+
+snippet     second
+abbr        second
+options     word
+  second${0}
+
+snippet     size
+abbr        size()
+options     word
+  size()${0}
+
+snippet     unique
+abbr        unique()
+options     word
+  unique(begin(${1:v}), end($1))${0}
+
+snippet     m
+options     head
+  int main() {
+    ${0:TARGET}
+	  return 0;
+  }
+
+snippet     mod
+abbr        fact, extgcd(), mod_inverse(), mod_fact(), mod_comb()
+options     word
+  struct Mod {
+    vector<ll> fact;
+    //vector<ll> finv;
+    Mod() {}
+    Mod(int n, int p) {
+      fact.resize(n + 1); fact[0] = 1;
+      for (int i = 1; i < n + 1; ++i) fact[i] = fact[i - 1] * i % p;
+      //finv.resize(n + 1);
+      //for (int i = 0; i < n + 1; ++i) finv[i] = mod_pow(fact[i], p - 2, p);
+    }
+    int extgcd(int a, int b, int& x, int& y) {
+      int d = a;
+      if (b) {
+        d = extgcd(b, a % b, y, x);
+        y -= (a / b) * x;
+      } else {
+        x = 1, y = 0;
+      }
+      return d;
+    }
+    ll mod_pow(ll x, ll n, ll m) {
+      if (n == 0) return 1;
+      ll res = mod_pow(x * x % m, n / 2, m);
+      if (n & 1) res = res * x % m;
+      return res;
+    }
+    int mod_inverse(int a, int m) {
+      int x, y;
+      extgcd(a, m, x, y);
+      return (m + x % m) % m;
+    }
+    int mod_fact(int n, int p, int& e) {
+      e = 0;
+      if (!n) return 1;
+      int res = mod_fact(n / p, p, e);
+      e += n / p;
+      int s = (n / p % 2) ? p - fact[n % p] : fact[n % p];
+      return res * s % p;
+    }
+    int mod_comb(int n, int k, int p) {
+      if (n < 0 || k < 0 || n < k) return 0;
+      int e1, e2, e3;
+      int a1 = mod_fact(n, p, e1);
+      int a2 = mod_fact(k, p, e2);
+      int a3 = mod_fact(n - k, p, e3);
+      if (e1 > e2 + e3) return 0;
+      return a1 * mod_inverse(a2 * a3 % p, p) % p;
+    }
+  };${0}
+
+snippet     unionfind
+abbr        data, root(), unite(), same(), rank()
+options     word
+  struct UnionFind {
+    vector<int> data;
+    UnionFind(int n) : data(n, -1) {}
+    int root(int x) {
+      return (data[x] < 0) ? x : data[x] = root(data[x]);
+    }
+    bool unite(int x, int y) {
+      x = root(x);
+      y = root(y);
+      if (x != y) {
+        if (data[y] < data[x]) swap(x, y);
+        data[x] += data[y];
+        data[y] = x;
+      }
+      return x != y;
+    }
+    bool same(int x, int y) {
+      return root(x) == root(y);
+    }
+    int rank(int x) {
+      -data[root(x)];
+    }
+  };
+
+snippet     seg
+abbr        dat, init(), update(), query()
+options     word
+  struct SegTree {
+    int N;
+    vector<int> dat;
+    SegTree(int k) {
+      N = 1;
+      while (N < k) N *= 2;
+      dat.assign(2 * N - 1, INT_MAX);
+    }
+    void update(int k, int a) {
+      k += N - 1;
+      dat[k] = a;
+      while (k > 0) {
+        k = (k - 1) / 2;
+        dat[k] = min(dat[k * 2 + 1], dat[k * 2 + 2]);
+      }
+    }
+    int query(int a, int b) { return query(a, b, 0, 0, N); }
+    int query(int a, int b, int k, int l, int r) {
+      if (r <= a || b <= l) return INT_MAX;
+      if (a <= l && r <= b) return dat[k];
+      int m = (l + r) / 2;
+      int vl = query(a, b, k * 2 + 1, l, m);
+      int vr = query(a, b, k * 2 + 2, m, r);
+      return min(vl, vr);
+    }
+  };${0}
+
+snippet     dijkstra
+abbr        d
+options     word
+  template<typename T> struct Edge { T to, cost; };
+  template<typename T> bool operator<(const Edge<T> &e1, const Edge<T> &e2) {
+    return (e1.cost != e2.cost) ? e1.cost > e2.cost : e1.to < e2.to;
+  }
+  template<class E> using Graph = vector<vector<E>>;
+
+  template<typename T> struct Dijkstra {
+    vector<T> d;
+    template<class E> Dijkstra(const Graph<E> &G, T s, T INF = 1e9) {
+      int N = G.size();
+      priority_queue<E> pq;
+      d.assign(N, INF); d[s] = 0;
+      pq.push({s, 0});
+      while (!pq.empty()) {
+        Edge<T> e = pq.top(); pq.pop();
+        T u = e.to;
+        if (d[u] < e.cost) continue;
+        for (auto&& v : G[u]) {
+          if (d[v.to] > d[u] + v.cost) {
+            d[v.to] = d[u] + v.cost;
+            pq.push({v.to, d[v.to]});
+          }
+        }
+      }
+    }
+  };
+
+snippet     kruskal
+abbr        int kruskal()
+options     word
+  template<typename T> struct Edge { T s, t, cost; };
+  template<typename T> bool operator<(const Edge<T> &e1, const Edge<T> &e2) {
+      return e1.cost < e2.cost;
+  }
+
+  template<typename T> T kruskal(const vector<Edge<T>> &es) {
+    sort(begin(es), end(es));
+    UnionFind uf(N);
+    T res = 0;
+    for (auto&& e : es) {
+      if (!uf.same(e.s, e.t)) {
+        uf.unite(e.s, e.t);
+        res += e.cost;
+      }
+    }
+    return res;
+  }${0}
+
+snippet     convex_hull
+abbr        vector<P> convex_hull(vector<P> ps)
+options     word
+  using P = complex<double>;
+
+  namespace std {
+    bool operator<(const P& a, const P& b) {
+      return (real(a) != real(b)) ? real(a) < real(b) : imag(a) < imag(b);
+    }
+  }
+
+  const double EPS = 1e-8;
+  const double INF = 1e12;
+
+  double cross(const P& a, const P& b) {
+    return imag(conj(a) * b);
+  }
+  double dot(const P& a, const P& b) {
+    return real(conj(a) * b);
+  }
+  int ccw(P a, P b, P c) {
+    b -= a; c -= a;
+    if (cross(b, c) > 0)   return +1;
+    if (cross(b, c) < 0)   return -1;
+    if (dot(b, c) < 0)     return +2;
+    if (norm(b) < norm(c)) return -2;
+    return 0;
+  }
+  vector<P> convex_hull(vector<P> ps) {
+    int n = ps.size(), k = 0;
+    sort(ps.begin(), ps.end());
+    vector<P> ch(n * 2);
+    for (int i = 0; i < n; ch[k++] = ps[i++]) {
+      while (k >= 2 && ccw(ch[k - 2], ch[k - 1], ps[i]) <= 0) --k;
+    }
+    for (int i = n - 2, t = k + 1; i >= 0; ch[k++] = ps[i--]) {
+      while (k >= t && ccw(ch[k - 2], ch[k - 1], ps[i]) <= 0) --k;
+    }
+    ch.resize(k - 1);
+    return ch;
+  }${0}
+
+snippet     bit
+abbr        ll sum(), add()
+options     word
+  struct BinaryIndexedTree {
+    vector<ll> bit;
+    BinaryIndexedTree(int n) : bit(n, 0) {}
+    ll sum(int i) {
+      ll s = 0;
+      for (; i > 0; i -= i & -i) s += bit[i];
+      return s;
+    }
+    void add(int i, ll x) {
+      for (; i <= bit.size(); i += i & -i) bit[i] += x;
+    }
+  };${0}
