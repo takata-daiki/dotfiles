@@ -25,6 +25,7 @@ formulas=(
     curl
     gcc
     git
+    mas
     postgresql
     python3
     reattach-to-user-namespace
