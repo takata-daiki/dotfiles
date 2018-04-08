@@ -29,20 +29,17 @@ formulas=(
     postgresql
     python3
     reattach-to-user-namespace
-    "ricty --with-powerline"
+    ricty --with-powerline
     screenfetch
     tmux
     tree
-    "vim --with-lua"
+    vim --with-lua
     wget
     xargs
     zsh
-    zsh-autosuggestions
-    zsh-completions
-    zsh-syntax-highlighting
 )
 echo "installing formulas..."
-brew install ${formulas[@]}
+brew install "${formulas[@]}"
 
 # Setup ZSH
 which -a zsh
@@ -66,7 +63,7 @@ apps=(
     virtualbox
 )
 echo "installing apps..."
-brew cask install ${apps[@]}
+brew cask install "${apps[@]}"
 
 # Install apps from Mac App Store
 # Note: You can get all installed apps by `mas list`

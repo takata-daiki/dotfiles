@@ -114,7 +114,7 @@ set smartcase       " ...unless we type a capital
 
 " ================ Custom Settings ========================
 
-"so ~/.yadr/vim/settings.vim
+so ~/.yadr/vim/settings.vim
 "python from powerline.vim import setup as powerline_setup
 "python powerline_setup()
 "python del powerline_setup
@@ -153,7 +153,6 @@ call dein#add('Shougo/neosnippet-snippets')
 call dein#add('kana/vim-operator-user')
 call dein#add('rhysd/vim-operator-surround')
 call dein#add('cohama/lexima.vim')
-call dein#add('altercation/vim-colors-solarized')
 
 " You can specify revision/branch/tag.
 call dein#add('Shougo/vimshell', { 'rev': '3787e5' })
