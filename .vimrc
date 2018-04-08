@@ -305,12 +305,6 @@ let OmniCpp_DefaultNamespaces = ["std", "_GLIBCXX_STD"]
 au CursorMovedI,InsertLeave * if pumvisible() == 0|silent! pclose|endif
 set completeopt=menuone,menu,longest,preview
 
-call lexima#add_rule({'char': '<TAB>', 'at': '\%#)', 'leave': 1})
-call lexima#add_rule({'char': '<TAB>', 'at': '\%#"', 'leave': 1})
-call lexima#add_rule({'char': '<TAB>', 'at': '\%#''', 'leave': 1})
-call lexima#add_rule({'char': '<TAB>', 'at': '\%#]', 'leave': 1})
-call lexima#add_rule({'char': '<TAB>', 'at': '\%#}', 'leave': 1})
-
 autocmd BufWritePost * :call AddExecmod()
 function AddExecmod()
     let line = getline(1)
@@ -320,3 +314,6 @@ function AddExecmod()
 endfunction
 
 nnoremap <space>gs :r! oj g/s -s 
+
+set clipboard+=unnamed
+set clipboard+=autoselect

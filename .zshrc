@@ -11,7 +11,9 @@ if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
 fi
 
 # Customize to your needs...
-. ~/Library/Python/2.7/lib/python/site-packages/powerline/bindings/zsh/powerline.zsh
+
+. /usr/local/lib/python2.7/site-packages/powerline/bindings/zsh/powerline.zsh
+#. ~/Library/Python/2.7/lib/python/site-packages/powerline/bindings/zsh/powerline.zsh
 autoload -Uz colors
 colors
 export LANG="ja_JP.UTF-8"

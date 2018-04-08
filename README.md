@@ -1,2 +1,4 @@
 # dotfiles
-ZSH + YADR(Presto, Powerline) + Dein.vim + TMUX
+ZSH + TMUX + YADR
+
+The smallest dotfiles with little modification to the setting files.
