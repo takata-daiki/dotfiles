@@ -109,22 +109,22 @@ init() {
   #run_go
 
   #[ ! -d ${HOME}/.zplug ] && curl -sL zplug.sh/installer | zsh
-  #[ ! -d ${HOME}/.tmux/plugins/tpm ] && git clone https://github.com/tmux-plugins/tpm ${HOME}/.tmux/plugins/tpm
+  [ ! -d ${HOME}/.tmux/plugins/tpm ] && git clone https://github.com/tmux-plugins/tpm ${HOME}/.tmux/plugins/tpm
 
   set +e
-  if has "pyenv"; then
-    [ ! -d $(pyenv root)/plugins/pyenv-virtualenv ] && git clone https://github.com/yyuu/pyenv-virtualenv $(pyenv root)/plugins/pyenv-virtualenv
-    # pyenv virtualenv -f ${latest} neovim3
-    # pyenv activate neovim3
-    # pip install neovim
-  fi
-  if has "rbenv"; then
-    [ ! -d $(rbenv root)/plugins/rbenv-default-gems ] && git clone -q https://github.com/rbenv/rbenv-default-gems.git $(rbenv root)/plugins/rbenv-default-gems
-    [ ! -e $(rbenv root)/default-gems ] && cp ${DOT_DIRECTORY}/default-gems $(rbenv root)/default-gems
-  fi
-  if [ ! -d $HOME/.cargo ]; then
-    curl https://sh.rustup.rs -sSf | sh -s -- -y
-  fi
+  #if has "pyenv"; then
+  #  [ ! -d $(pyenv root)/plugins/pyenv-virtualenv ] && git clone https://github.com/yyuu/pyenv-virtualenv $(pyenv root)/plugins/pyenv-virtualenv
+  #  # pyenv virtualenv -f ${latest} neovim3
+  #  # pyenv activate neovim3
+  #  # pip install neovim
+  #fi
+  #if has "rbenv"; then
+  #  [ ! -d $(rbenv root)/plugins/rbenv-default-gems ] && git clone -q https://github.com/rbenv/rbenv-default-gems.git $(rbenv root)/plugins/rbenv-default-gems
+  #  [ ! -e $(rbenv root)/default-gems ] && cp ${DOT_DIRECTORY}/default-gems $(rbenv root)/default-gems
+  #fi
+  #if [ ! -d $HOME/.cargo ]; then
+  #  curl https://sh.rustup.rs -sSf | sh -s -- -y
+  #fi
 
   echo "$(tput setaf 2)Initialize complete!. ✔︎$(tput sgr0)"
 }
