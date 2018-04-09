@@ -15,6 +15,7 @@ usage() {
 Usage:
   $name [arguments] [command]
 Commands:
+  xcode -- if you haven't installed a "Xcode Command Line Tools"
   deploy
   init
 Arguments:
@@ -74,9 +75,9 @@ deploy() {
 }
 
 init() {
+  run_yadr
   case ${OSTYPE} in
     darwin*)
-      run_yadr
       run_brew
 
       if [ ! -e ~/Library/Fonts/Ricty-Regular-Powerline.ttf ]; then
@@ -133,6 +134,10 @@ command=$1
 [ $# -gt 0 ] && shift
 
 case $command in
+  xcode)
+    java -v
+    xcode-select --install
+    ;;
   deploy)
     deploy
     ;;
