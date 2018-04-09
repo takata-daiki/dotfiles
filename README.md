@@ -2,10 +2,10 @@
 ZSH + TMUX + YADR
 The smallest dotfiles with little modification to the setting files.
 
-1. To install, run the following command:br
+1. To install, run the following command  
 
-    ```$ bash -c "$(curl -fsSL raw.github.com/takata-daiki/dotfiles/master/install.sh)"```
-br
-2. After that you can look the usage:br
+    `$ bash -c "$(curl -fsSL raw.github.com/takata-daiki/dotfiles/master/install.sh)"`
+  
+2. After that you can look the usage  
 
-    ```$ ~/dotfiles/dotfiles```
+    `$ ~/dotfiles/dotfiles`
