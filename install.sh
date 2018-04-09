@@ -141,7 +141,7 @@ case $command in
   deploy)
     deploy
     ;;
-  init*)
+  init)
     init
     ;;
   *)
