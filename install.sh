@@ -76,6 +76,7 @@ deploy() {
 
 init() {
   run_yadr
+
   case ${OSTYPE} in
     darwin*)
       run_brew
@@ -94,6 +95,8 @@ init() {
       exit 1
       ;;
   esac
+
+  run_dein
 
   [ ${SHELL} != "/bin/zsh"  ] && chsh -s /bin/zsh
 
