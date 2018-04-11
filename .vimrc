@@ -158,6 +158,9 @@ if dein#load_state('/Users/Daiki/.vim/dein')
     call dein#add('roxma/vim-hug-neovim-rpc')
   endif
   let g:deoplete#enable_at_startup = 1
+  call denite#custom#map('insert', '<ESC>', '<denite:enter_mode:normal>')
+  call denite#custom#map('normal', '<Down>', '<denite:move_to_next_line>')
+  call denite#custom#map('normal', '<Up>', '<denite:move_to_previous_line>')
 
   " You can specify revision/branch/tag.
   call dein#add('Shougo/vimshell', { 'rev': '3787e5' })
