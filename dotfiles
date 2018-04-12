@@ -55,8 +55,8 @@ fi
 
 cd ${DOT_DIRECTORY}
 source ./lib/brew
-#source ./lib/go
-#source ./lib/apt-get
+source ./lib/yadr
+source ./lib/dein
 
 deploy() {
   for f in .??*
