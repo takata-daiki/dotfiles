@@ -14,7 +14,6 @@ run_brew() {
 
     brew tap 'caskroom/cask'
     brew tap 'caskroom/fonts'
-    brew tap 'homebrew/versions'
     brew tap 'sanemat/font'
 
     local list_formulae
