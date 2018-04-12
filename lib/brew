@@ -59,7 +59,8 @@ run_brew() {
     #ln -sfv /usr/local/opt/postgresql/*.plist ~/Library/LaunchAgents
     if [ -z "${installed_ricty}"  ]; then
       echo "Reload fonts. This could take a while..."
-      local cellar=`brew --config | grep 'HOMEBREW_CELLAR' | cut -d' ' -f 2`
+      #local cellar=`brew --config | grep 'HOMEBREW_CELLAR' | cut -d' ' -f 2`
+      local cellar=/usr/local/Cellar
       find ${cellar}/ricty/*/share/fonts/Ricty*.ttf | xargs -I % cp % ~/Library/Fonts
       fc-cache -vf
     fi
