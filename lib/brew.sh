@@ -76,9 +76,11 @@ run_brew() {
     local -a desired_formulae=(
       'alfred'
       'bettertouchtool'
+      'bettersnaptool'
       'dropbox'
       'google-chrome'
       'google-japanese-ime'
+      'sourcetree'
       'skype'
       'virtualbox'
       'xquartz'
