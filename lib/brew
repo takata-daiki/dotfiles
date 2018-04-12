@@ -15,30 +15,23 @@ run_brew() {
     brew tap 'caskroom/cask'
     brew tap 'caskroom/fonts'
     brew tap 'homebrew/versions'
-    brew tap 'homebrew/apache'
-    brew tap 'homebrew/dupes'
     brew tap 'sanemat/font'
 
     local list_formulae
     local -a missing_formulae
     local -a desired_formulae=(
       'coreutils'
-      'ctags'
-      'fontforge'
       'gcc'
       'gettext'
       'git'
-      'openssl'
-      'peco'
-      'postgresql'
       'python3'
       'reattach-to-user-namespace'
-      'svn'
+      'ricty --with-powerline'
       'tmux'
       'tree'
       'wget'
-      'yarn'
-      'zsh'
+      '--without-etcdir zsh'
+      'zsh-completions'
     )
 
     local installed=`brew list`
@@ -50,7 +43,7 @@ run_brew() {
         missing_formulae=("${missing_formulae[@]}" "${desired_formulae[$index]}")
       else
         echo "Installed ${formula}"
-        [[ "${formula}" = "ricty" ]] && local installed_ricty=true
+        [[ "${formula}" = "ricty --with-powerline" ]] && local installed_ricty=true
       fi
     done
 
@@ -63,8 +56,8 @@ run_brew() {
       [[ $? ]] && echo "$(tput setaf 2)Installed missing formulae ✔︎$(tput sgr0)"
     fi
 
-    ln -sfv /usr/local/opt/mysql/*.plist ~/Library/LaunchAgents
-    ln -sfv /usr/local/opt/postgresql/*.plist ~/Library/LaunchAgents
+    #ln -sfv /usr/local/opt/mysql/*.plist ~/Library/LaunchAgents
+    #ln -sfv /usr/local/opt/postgresql/*.plist ~/Library/LaunchAgents
     if [ -z "${installed_ricty}"  ]; then
       echo "Reload fonts. This could take a while..."
       local cellar=`brew --config | grep 'HOMEBREW_CELLAR' | cut -d' ' -f 2`
@@ -74,16 +67,8 @@ run_brew() {
 
     local -a missing_formulae=()
     local -a desired_formulae=(
-      'alfred'
-      'bettertouchtool'
-      'bettersnaptool'
-      'dropbox'
       'google-chrome'
       'google-japanese-ime'
-      'sourcetree'
-      'skype'
-      'virtualbox'
-      'xquartz'
     )
     # cask
     local installed=`brew cask list`

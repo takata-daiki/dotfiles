@@ -75,17 +75,9 @@ deploy() {
 }
 
 init() {
-  run_yadr
-
   case ${OSTYPE} in
     darwin*)
       run_brew
-
-      if [ ! -e ~/Library/Fonts/Ricty-Regular-Powerline.ttf ]; then
-        brew install 'ricty --with-powerline'
-        cp -f /usr/local/opt/ricty/share/fonts/Ricty*.ttf ${HOME}/Library/Fonts/
-        fc-cache -vf
-      fi
       ;;
     linux-gnu)
       #run_apt
@@ -96,19 +88,20 @@ init() {
       ;;
   esac
 
+  run_yadr
   run_dein
 
   [ ${SHELL} != "/bin/zsh"  ] && chsh -s /bin/zsh
 
-  if [ ! -d ${HOME}/.anyenv ]; then
-    git clone https://github.com/riywo/anyenv ~/.anyenv
-    anyenv install goenv
-    anyenv install rbenv
-    anyenv install pyenv
-    anyenv install phpenv
-    anyenv install ndenv
-    exec $SHELL -l
-  fi
+  #if [ ! -d ${HOME}/.anyenv ]; then
+  #  git clone https://github.com/riywo/anyenv ~/.anyenv
+  #  anyenv install goenv
+  #  anyenv install rbenv
+  #  anyenv install pyenv
+  #  anyenv install phpenv
+  #  anyenv install ndenv
+  #  exec $SHELL -l
+  #fi
 
   #run_go
 
