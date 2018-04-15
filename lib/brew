@@ -31,6 +31,7 @@ run_brew() {
       'wget'
       '--without-etcdir zsh'
       'zsh-completions'
+      'screenfetch'
     )
 
     local installed=`brew list`

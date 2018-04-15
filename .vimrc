@@ -1,3 +1,4 @@
+" Use Vim settings, rather then Vi settings (much better!).
 " This must be first, because it changes other options as a side effect.
 set nocompatible
 
@@ -24,7 +25,6 @@ set autoread                    "Reload files changed outside vim
 set hidden
 
 "turn on syntax highlighting
-
 syntax on
 
 " Change leader to a comma because the backslash is too far away
@@ -71,7 +71,7 @@ nnoremap p p=`]<C-o>
 nnoremap P P=`]<C-o>
 
 filetype plugin on
-
+filetype indent on
 
 " Display tabs and trailing spaces visually
 set list listchars=tab:\ \ ,trail:·
@@ -91,6 +91,8 @@ set wildmode=list:longest
 set wildmenu                "enable ctrl-n and ctrl-p to scroll thru matches
 set wildignore=*.o,*.obj,*~ "stuff to ignore when tab completing
 set wildignore+=*vim/backups*
+set wildignore+=*sass-cache*
+set wildignore+=*DS_Store*
 set wildignore+=vendor/rails/**
 set wildignore+=vendor/cache/**
 set wildignore+=*.gem
@@ -120,27 +122,27 @@ if &compatible
 endif
 
 " Required:
-set runtimepath+=/Users/Daiki/.vim/dein/repos/github.com/Shougo/dein.vim
+set runtimepath+=/Users/daiki/.vim/dein/repos/github.com/Shougo/dein.vim
 
 " Required:
-if dein#load_state('/Users/Daiki/.vim/dein')
-  call dein#begin('/Users/Daiki/.vim/dein')
+if dein#load_state('/Users/daiki/.vim/dein')
+  call dein#begin('/Users/daiki/.vim/dein')
 
   " Let dein manage dein
   " Required:
-  call dein#add('/Users/Daiki/.vim/dein/repos/github.com/Shougo/dein.vim')
+  call dein#add('/Users/daiki/.vim/dein/repos/github.com/Shougo/dein.vim')
 
   " Add or remove your plugins here:
   call dein#add('Shougo/unite.vim')
   "call dein#add('Shougo/denite.nvim')
   call dein#add('Shougo/neosnippet.vim')
   call dein#add('Shougo/neosnippet-snippets')
-  call dein#add('Shougo/deoplete.nvim')
-  if !has('nvim')
-    call dein#add('roxma/nvim-yarp')
-    call dein#add('roxma/vim-hug-neovim-rpc')
-  endif
-  let g:deoplete#enable_at_startup = 1
+  "call dein#add('Shougo/deoplete.nvim')
+  "if !has('nvim')
+  "  call dein#add('roxma/nvim-yarp')
+  "  call dein#add('roxma/vim-hug-neovim-rpc')
+  "endif
+  "let g:deoplete#enable_at_startup = 1
 
   " You can specify revision/branch/tag.
   call dein#add('Shougo/vimshell', { 'rev': '3787e5' })
@@ -187,33 +189,29 @@ endif
 
 "original Scripts------------------------
 
+" Powerline
+python3 from powerline.vim import setup as powerline_setup
+python3 powerline_setup()
+python3 del powerline_setup
+set laststatus=2
+set showtabline=2
+set noshowmode
+
 set mouse=a
 set ttymouse=xterm2
 set whichwrap=b,s,h,l,<,>,[,],~
 set clipboard+=unnamed
-set clipboard+=autoselect
+"set clipboard+=autoselect
+"set completeopt=menuone,menu,longest,preview
+
 nnoremap <silent><Esc><Esc> :<C-u>set nohlsearch!<CR>
+"nnoremap <space>gs :r! oj g/s -s 
 
-" OmniCppComplete
-let OmniCpp_NamespaceSearch = 1
-let OmniCpp_GlobalScopeSearch = 1
-let OmniCpp_ShowAccess = 1
-let OmniCpp_ShowPrototypeInAbbr = 1 " show function parameters
-let OmniCpp_MayCompleteDot = 1 " autocomplete after .
-let OmniCpp_MayCompleteArrow = 1 " autocomplete after ->
-let OmniCpp_MayCompleteScope = 1 " autocomplete after ::
-let OmniCpp_DefaultNamespaces = ["std", "_GLIBCXX_STD"]
+"autocmd BufWritePost * :call AddExecmod()
+"function AddExecmod()
+"    let line = getline(1)
+"    if strpart(line, 0, 2) == "#!"
+"        call system("chmod +x ". expand("%"))
+"    endif
+"endfunction
 
-" automatically open and close the popup menu / preview window
-au CursorMovedI,InsertLeave * if pumvisible() == 0|silent! pclose|endif
-set completeopt=menuone,menu,longest,preview
-
-autocmd BufWritePost * :call AddExecmod()
-function AddExecmod()
-    let line = getline(1)
-    if strpart(line, 0, 2) == "#!"
-        call system("chmod +x ". expand("%"))
-    endif
-endfunction
-
-nnoremap <space>gs :r! oj g/s -s 

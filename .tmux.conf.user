@@ -330,5 +330,15 @@ bind-key -T copy-mode-vi V send-keys -X select-line
 
 # vim:fdm=marker expandtab fdc=3 ft=tmux ts=2 sw=2 sts=2:
 
-set -g window-status-format '#[fg=colour235,bg=colour252,bold] #I #(pwd="#{pane_current_path}"; echo ${pwd####*/}) #W '
-set -g terminal-overrides 'xterm*:smcup@:rmcup@'}}}
+# Powerline
+#set-option -g default-terminal screen-256color
+#set -g terminal-overrides 'xterm:colors=256'
+run-shell "powerline-daemon -q"
+source "/usr/local/lib/python3.6/site-packages/powerline/bindings/tmux/powerline.conf"
+
+#set -g window-status-format '#[fg=colour235,bg=colour252,bold] #I #(pwd="#{pane_current_path}"; echo ${pwd####*/}) #W '
+#set -g window-status-current-format '#[fg=colour235,bg=colour39]⮀#[fg=black,bg=colour39,noreverse,bold] #{?window_zoomed_flag,#[fg=colour228],} #I #(pwd="#{pane_current_path}"; echo ${pwd####*/}) #W #[fg=colour39,bg=colour235,nobold]⮀'
+unbind -n C-h
+unbind -n C-j
+unbind -n C-k
+unbind -n C-l

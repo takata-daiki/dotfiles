@@ -57,6 +57,7 @@ cd ${DOT_DIRECTORY}
 source ./lib/brew
 source ./lib/yadr
 source ./lib/dein
+source ./lib/powerline
 
 deploy() {
   for f in .??*
@@ -90,6 +91,7 @@ init() {
 
   run_yadr
   run_dein
+  run_powerline
 
   [ ${SHELL} != "/bin/zsh"  ] && chsh -s /bin/zsh
 
