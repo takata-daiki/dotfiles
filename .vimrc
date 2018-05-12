@@ -122,27 +122,36 @@ if &compatible
 endif
 
 " Required:
-set runtimepath+=/Users/daiki/.vim/dein/repos/github.com/Shougo/dein.vim
+set runtimepath+=~/.vim/dein/repos/github.com/Shougo/dein.vim
 
 " Required:
-if dein#load_state('/Users/daiki/.vim/dein')
-  call dein#begin('/Users/daiki/.vim/dein')
+if dein#load_state('~/.vim/dein')
+  call dein#begin('~/.vim/dein')
 
   " Let dein manage dein
   " Required:
-  call dein#add('/Users/daiki/.vim/dein/repos/github.com/Shougo/dein.vim')
+  call dein#add('~/.vim/dein/repos/github.com/Shougo/dein.vim')
 
   " Add or remove your plugins here:
   call dein#add('Shougo/unite.vim')
   "call dein#add('Shougo/denite.nvim')
   call dein#add('Shougo/neosnippet.vim')
   call dein#add('Shougo/neosnippet-snippets')
-  "call dein#add('Shougo/deoplete.nvim')
-  "if !has('nvim')
-  "  call dein#add('roxma/nvim-yarp')
-  "  call dein#add('roxma/vim-hug-neovim-rpc')
-  "endif
-  "let g:deoplete#enable_at_startup = 1
+  call dein#add('Shougo/deoplete.nvim')
+  if !has('nvim')
+    call dein#add('roxma/nvim-yarp')
+    call dein#add('roxma/vim-hug-neovim-rpc')
+  endif
+  let g:deoplete#enable_at_startup = 1
+
+  call dein#add('vim-scripts/OmniCppComplete')
+  call dein#add('cohama/lexima.vim')
+  call dein#add('Valloric/YouCompleteMe')
+  call dein#add('davidhalter/jedi-vim')
+  call dein#add('thinca/vim-quickrun')
+  call dein#add('majutsushi/tagbar')
+  call dein#add('lervag/vimtex')
+  call dein#add('KeitaNakamura/tex-conceal.vim')
 
   " You can specify revision/branch/tag.
   call dein#add('Shougo/vimshell', { 'rev': '3787e5' })
@@ -168,22 +177,33 @@ endif
 let g:neosnippet#snippets_directory = '~/.vim/bundle/neosnippet-snippets/snippets/'
 
 " Plugin key-mappings.
+" Note: It must be "imap" and "smap".  It uses <Plug> mappings.
 imap <C-k>     <Plug>(neosnippet_expand_or_jump)
 smap <C-k>     <Plug>(neosnippet_expand_or_jump)
 xmap <C-k>     <Plug>(neosnippet_expand_target)
 
 " SuperTab like snippets behavior.
+" Note: It must be "imap" and "smap".  It uses <Plug> mappings.
 imap <expr><TAB>
-\ pumvisible() ? "\<C-n>" :
-\ neosnippet#expandable_or_jumpable() ?
-\ "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
+ \ pumvisible() ? "\<C-n>" :
+ \ neosnippet#expandable_or_jumpable() ?
+ \ "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
 smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
-\ "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
+ \ "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
 
 " For snippet_complete marker.
 if has('conceal')
-  set conceallevel=2 concealcursor=niv
+  " set conceallevel=2 concealcursor=niv
+  set conceallevel=1 concealcursor=
 endif
+
+" Enable snipMate compatibility feature.
+" let g:neosnippet#enable_snipmate_compatibility = 1
+
+" Expand the completed snippet trigger by <CR>.
+"imap <expr><CR>
+"\ (pumvisible() && neosnippet#expandable()) ?
+"\ "\<Plug>(neosnippet_expand)" : "\<CR>"
 
 "End neosnippet Scripts------------------
 
@@ -202,10 +222,10 @@ set ttymouse=xterm2
 set whichwrap=b,s,h,l,<,>,[,],~
 set clipboard+=unnamed
 "set clipboard+=autoselect
-"set completeopt=menuone,menu,longest,preview
 
 nnoremap <silent><Esc><Esc> :<C-u>set nohlsearch!<CR>
-"nnoremap <space>gs :r! oj g/s -s 
+nnoremap <space>gs :r! oj g/s -s 
+nnoremap <silent><C-e> :NERDTreeToggle<CR>
 
 "autocmd BufWritePost * :call AddExecmod()
 "function AddExecmod()
@@ -214,4 +234,61 @@ nnoremap <silent><Esc><Esc> :<C-u>set nohlsearch!<CR>
 "        call system("chmod +x ". expand("%"))
 "    endif
 "endfunction
+"
+" configure tags - add additional tags here or comment out not-used ones
+set tags+=~/.vim/tags/cpp
+set tags+=~/.vim/tags/gl
+set tags+=~/.vim/tags/sdl
+set tags+=~/.vim/tags/qt4
+" build tags of your own project with Ctrl-F12
+map <C-F12> :!ctags -R --sort=yes --c++-kinds=+p --fields=+iaS --extra=+q .<CR>
+" OmniCppComplete
+let OmniCpp_NamespaceSearch = 1
+let OmniCpp_GlobalScopeSearch = 1
+let OmniCpp_ShowAccess = 1
+let OmniCpp_ShowPrototypeInAbbr = 1 " show function parameters
+let OmniCpp_MayCompleteDot = 1 " autocomplete after .
+let OmniCpp_MayCompleteArrow = 1 " autocomplete after ->
+let OmniCpp_MayCompleteScope = 1 " autocomplete after ::
+let OmniCpp_DefaultNamespaces = ["std", "_GLIBCXX_STD"]
+" automatically open and close the popup menu / preview window
+au CursorMovedI,InsertLeave * if pumvisible() == 0|silent! pclose|endif
+set completeopt=menuone,menu,longest,preview
 
+let g:ycm_python_binary_path = 'python3'
+let g:ycm_global_ycm_extra_conf = '~/.vim/dein/repos/github.com/Valloric/YouCompleteMe/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py'
+if !exists('g:ycm_semantic_triggers')
+  let g:ycm_semantic_triggers = {}
+endif
+let g:ycm_semantic_triggers.tex = g:vimtex#re#youcompleteme
+
+let g:quickrun_config = {
+\  "_" : {
+\    "hook/time/enable" : 1,
+\    "outputter" : "error",
+\    "outputter/error/success" : "buffer",
+\    "outputter/error/error"   : "quickfix",
+\    "outputter/buffer/close_on_empty" : 1,
+\  },
+\  "cpp" : {
+\    "command" : "g++",
+\  },
+\  "tex": {
+\    "command": "latexmk",
+\    "exec": ["%c -pdfdvi %s", "open %s:r.pdf"],
+\  },
+\}
+
+let g:quickrun_no_default_key_mapping = 1
+au FileType qf nnoremap <silent><buffer>q :quit<CR>
+nnoremap <expr><silent> <C-c> quickrun#is_running() ? quickrun#sweep_sessions() : "\<C-c>"
+nnoremap \r :write<CR>:QuickRun -mode n<CR>
+xnoremap \r :<C-U>write<CR>gv:QuickRun -mode v<CR>
+
+let g:tagbar_width = 20
+nnoremap <silent><C-y> :TagbarToggle<CR>
+
+let g:polyglot_disabled = ['latex']
+let g:vimtex_compiler_latexmk = {'callback' : 0}
+let g:tex_flavor = 'latex'
+let g:tex_conceal = 'adbgm'

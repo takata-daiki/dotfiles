@@ -10,7 +10,7 @@
 #
 
 # Set case-sensitivity for completion, history lookup, etc.
-#zstyle ':prezto:*:*' case-sensitive 'yes'
+zstyle ':prezto:*:*' case-sensitive 'no'
 
 # Color output (auto set to 'no' on dumb terminals).
 zstyle ':prezto:*:*' color 'yes'
@@ -37,11 +37,11 @@ zstyle ':prezto:load' pmodule \
   'git' \
   'osx' \
   'ruby' \
-  'syntax-highlighting' \
-  'history-substring-search' \
   'ssh' \
   'prompt' \
-  'tmux'
+  'tmux' \
+  #'syntax-highlighting' \
+  #'history-substring-search' \
 
 #
 # Editor
@@ -127,15 +127,10 @@ zstyle ':prezto:module:ssh-agent' forwarding 'yes'
 # Auto set the tab and window titles.
 zstyle ':prezto:module:terminal' auto-title 'yes'
 
-# Set the window title format.
-zstyle ':prezto:module:terminal:window-title' format '%n@%m: %s'
-
-# Set the tab title format.
-zstyle ':prezto:module:terminal:tab-title' format '%m: %s'
-
 #
 # Tmux
 #
 
-# Auto start a session when Zsh is launched in a local terminal.
+# Auto start a session when Zsh is launched.
 zstyle ':prezto:module:tmux:auto-start' local 'yes'
+
