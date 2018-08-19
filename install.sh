@@ -15,7 +15,6 @@ usage() {
 Usage:
   $name [arguments] [command]
 Commands:
-  xcode -- if you haven't installed a "Xcode Command Line Tools"
   deploy
   init
 Arguments:
@@ -132,10 +131,6 @@ command=$1
 [ $# -gt 0 ] && shift
 
 case $command in
-  xcode)
-    java -v
-    xcode-select --install
-    ;;
   deploy)
     deploy
     ;;
