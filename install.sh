@@ -79,11 +79,8 @@ init() {
     darwin*)
       run_brew
       ;;
-    linux-gnu)
-      #run_apt
-      ;;
     *)
-      echo $(tput setaf 1)Working only OSX / Ubuntu!!$(tput sgr0)
+      echo $(tput setaf 1)Working only OSX !!$(tput sgr0)
       exit 1
       ;;
   esac
@@ -104,9 +101,6 @@ init() {
   #  exec $SHELL -l
   #fi
 
-  #run_go
-
-  #[ ! -d ${HOME}/.zplug ] && curl -sL zplug.sh/installer | zsh
   [ ! -d ${HOME}/.tmux/plugins/tpm ] && git clone https://github.com/tmux-plugins/tpm ${HOME}/.tmux/plugins/tpm
 
   set +e
