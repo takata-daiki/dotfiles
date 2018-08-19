@@ -54,10 +54,10 @@ if [ ! -d ${DOT_DIRECTORY} ]; then
 fi
 
 cd ${DOT_DIRECTORY}
-source ./lib/brew
-source ./lib/yadr
-source ./lib/dein
-source ./lib/powerline
+source ./lib/brew.sh
+source ./lib/yadr.sh
+source ./lib/dein.sh
+source ./lib/powerline.sh
 
 deploy() {
   for f in .??*

@@ -1,13 +1,20 @@
 # Dotfiles (for OS X)
 ZSH + TMUX + YADR + Dein.vim
 
-The smallest dotfiles with little modification to the setting files.
+The simplest dotfiles with little modification to the setting files.
 
 ## Usage
-1. To install, run the following command:
+The installation step requires the [XCode Command Line Tools](https://developer.apple.com/downloads)
 
-    `$ bash -c "$(curl -fsSL raw.github.com/takata-daiki/dotfiles/master/dotfiles)"`
+```
+$ java -v
+$ xcode-select --install
+```
 
-2. After that you can look the usage:
+To install, run the following command:
 
-    `$ ~/dotfiles/dotfiles`
+    `$ bash -c "$(curl -fsSL raw.github.com/takata-daiki/dotfiles/master/install.sh)"`
+
+After that you can look the usage:
+
+    `$ ~/dotfiles/install.sh -h`
