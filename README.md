@@ -20,5 +20,5 @@ $ bash -c "$(curl -fsSL raw.github.com/takata-daiki/dotfiles/master/install.sh)"
 2. After that you can look the usage:
 
 ```
-$ ~/dotfiles/install.sh -h`
+$ ~/dotfiles/install.sh -h
 ```
