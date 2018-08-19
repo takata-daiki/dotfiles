@@ -15,7 +15,6 @@ usage() {
 Usage:
   $name [arguments] [command]
 Commands:
-  xcode -- if you haven't installed a "Xcode Command Line Tools"
   deploy
   init
 Arguments:
@@ -54,10 +53,10 @@ if [ ! -d ${DOT_DIRECTORY} ]; then
 fi
 
 cd ${DOT_DIRECTORY}
-source ./lib/brew
-source ./lib/yadr
-source ./lib/dein
-source ./lib/powerline
+source ./lib/brew.sh
+source ./lib/yadr.sh
+source ./lib/dein.sh
+source ./lib/powerline.sh
 
 deploy() {
   for f in .??*
@@ -132,10 +131,6 @@ command=$1
 [ $# -gt 0 ] && shift
 
 case $command in
-  xcode)
-    java -v
-    xcode-select --install
-    ;;
   deploy)
     deploy
     ;;
