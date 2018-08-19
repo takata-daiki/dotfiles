@@ -74,7 +74,7 @@ filetype plugin on
 filetype indent on
 
 " Display tabs and trailing spaces visually
-set list listchars=tab:\ \ ,trail:·
+set list listchars=tab:\ \ ,trail:･
 
 set nowrap       "Don't wrap lines
 set linebreak    "Wrap lines at convenient points
@@ -144,6 +144,7 @@ if dein#load_state('~/.vim/dein')
   endif
   let g:deoplete#enable_at_startup = 1
 
+  " call dein#add("edkolev/tmuxline.vim")
   call dein#add('vim-scripts/OmniCppComplete')
   call dein#add('cohama/lexima.vim')
   call dein#add('Valloric/YouCompleteMe')
@@ -152,6 +153,7 @@ if dein#load_state('~/.vim/dein')
   call dein#add('majutsushi/tagbar')
   call dein#add('lervag/vimtex')
   call dein#add('KeitaNakamura/tex-conceal.vim')
+  call dein#add('airblade/vim-gitgutter')
 
   " You can specify revision/branch/tag.
   call dein#add('Shougo/vimshell', { 'rev': '3787e5' })
@@ -193,8 +195,7 @@ smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
 
 " For snippet_complete marker.
 if has('conceal')
-  " set conceallevel=2 concealcursor=niv
-  set conceallevel=1 concealcursor=
+  set conceallevel=2 concealcursor=niv
 endif
 
 " Enable snipMate compatibility feature.
@@ -209,10 +210,14 @@ endif
 
 "original Scripts------------------------
 
+" let g:solarized_termcolors=256
+let g:solarized_termtrans=1
+colorscheme solarized
+
 " Powerline
-python3 from powerline.vim import setup as powerline_setup
-python3 powerline_setup()
-python3 del powerline_setup
+" python3 from powerline.vim import setup as powerline_setup
+" python3 powerline_setup()
+" python3 del powerline_setup
 set laststatus=2
 set showtabline=2
 set noshowmode
@@ -288,7 +293,8 @@ xnoremap \r :<C-U>write<CR>gv:QuickRun -mode v<CR>
 let g:tagbar_width = 20
 nnoremap <silent><C-y> :TagbarToggle<CR>
 
+autocmd FileType tex setlocal conceallevel=1 concealcursor=nc
 let g:polyglot_disabled = ['latex']
 let g:vimtex_compiler_latexmk = {'callback' : 0}
 let g:tex_flavor = 'latex'
-let g:tex_conceal = 'adbgm'
+let g:tex_conceal = 'abdgm'

@@ -90,6 +90,11 @@ abbr        return
 options     word
   return ${0};
 
+snippet     all
+abbr        begin(v), end(v)
+options     word
+  begin(${1}), end($1)${0}
+
 snippet     accumulate
 abbr        accumulate(begin(v), end(v), init, binary_op)
 options     word
@@ -301,20 +306,21 @@ snippet     mod
 abbr        fact, factInv, modPow, modComb
 options     word
   template<typename T> struct Mod {
+    T p;
     vector<T> fact, factInv;
     Mod() {}
-    Mod(T n, T p = 1e9 + 7) : fact(n + 1), factInv(n + 1) {
+    Mod(T n, T p = 1e9 + 7) : p(p), fact(n + 1), factInv(n + 1) {
       fact[0] = 1;
       for (T i = 1; i < n + 1; ++i) fact[i] = fact[i - 1] * i % p;
-      for (T i = 0; i < n + 1; ++i) factInv[i] = modPow(fact[i], p - 2, p);
+      for (T i = 0; i < n + 1; ++i) factInv[i] = modPow(fact[i], p - 2);
     }
-    T modPow(T x, T n, T m) {
+    T modPow(T x, T n) {
       if (n == 0) return 1;
-      T res = modPow(x * x % m, n / 2, m);
-      if (n & 1) res = res * x % m;
+      T res = modPow(x * x % p, n / 2);
+      if (n & 1) res = res * x % p;
       return res;
     }
-    T modComb(T n, T k, T p = 1e9 + 7) {
+    T modComb(T n, T k) {
       return ((fact[n] * factInv[k]) % p * factInv[n - k]) % p;
     }
   };${0}
@@ -328,27 +334,27 @@ options     word
   //    }
   //    return d;
   //  }
-  //  T modInv(T a, T m) {
+  //  T modInv(T a) {
   //    T x, y;
-  //    extGcd(a, m, x, y);
-  //    return (m + x % m) % m;
+  //    extGcd(a, p, x, y);
+  //    return (p + x % p) % p;
   //  }
-  //  T modFact(T n, T p, T& e) {
+  //  T modFact(T n, T& e) {
   //    e = 0;
   //    if (!n) return 1;
-  //    T res = modFact(n / p, p, e);
+  //    T res = modFact(n / p, e);
   //    e += n / p;
   //    T s = (n / p % 2) ? p - fact[n % p] : fact[n % p];
   //    return res * s % p;
   //  }
-  //  T modComb(T n, T k, T p) {
+  //  T modComb(T n, T k) {
   //    if (n < 0 || k < 0 || n < k) return 0;
   //    T e1, e2, e3;
-  //    T a1 = modFact(n, p, e1);
-  //    T a2 = modFact(k, p, e2);
-  //    T a3 = modFact(n - k, p, e3);
+  //    T a1 = modFact(n, e1);
+  //    T a2 = modFact(k, e2);
+  //    T a3 = modFact(n - k, e3);
   //    if (e1 > e2 + e3) return 0;
-  //    return a1 * modInverse(a2 * a3 % p, p) % p;
+  //    return a1 * modInv(a2 * a3 % p) % p;
   //  }
   //};
 
