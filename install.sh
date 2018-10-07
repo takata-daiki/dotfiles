@@ -5,6 +5,26 @@ DOT_DIRECTORY="${HOME}/dotfiles"
 DOT_TARBALL="https://github.com/takata-daiki/dotfiles/tarball/master"
 REMOTE_URL="git@github.com:takata-daiki/dotfiles.git"
 
+ESC="\033["
+ESCEND=m
+ESCOFF="\033[0m"
+
+SUCCESS="${ESC}32${ESCEND}Success${ESCOFF}"
+INFO="${ESC}36${ESCEND}Info...${ESCOFF}"
+SKIP="${ESC}34${ESCEND}Skip...${ESCOFF}"
+WARNING="${ESC}33${ESCEND}Warning${ESCOFF}"
+FAILED="${ESC}31${ESCEND}FAILED!${ESCOFF}"
+
+function msg() {
+  local MESSAGE=$(echo "$@" | sed -e "s/\\\n/\n                              /g")
+  echo -e "[$(date +'%Y-%m-%d %H:%M:%S')] ${MESSAGE}" >&1
+}
+
+function err() {
+  local MESSAGE=$(echo "$@" | sed -e "s/\\\n/\n                              /g")
+  echo -e "[$(date +'%Y-%m-%d %H:%M:%S')] ${FAILED} $*" >&2
+}
+
 has() {
   type "$1" > /dev/null 2>&1
 }
@@ -12,14 +32,18 @@ has() {
 usage() {
   name=`basename $0`
   cat <<EOF
-Usage:
-  $name [arguments] [command]
+
+Usage:  $name [OPTIONS] COMMAND
+
+Options:
+  -f  Overwrite dotfiles
+  -h  Print help (this message)
+
 Commands:
-  deploy
-  init
-Arguments:
-  -f $(tput setaf 1)** warning **$(tput sgr0) Overwrite dotfiles.
-  -h Print help (this message)
+  deploy  Create symlink to home directory
+  init    Setup environment settings
+
+To complete this dotfiles, run './$name init' then './$name deploy'.
 EOF
   exit 1
 }
@@ -38,7 +62,7 @@ shift $((OPTIND - 1))
 
 # If missing, download and extract the dotfiles repository
 if [ ! -d ${DOT_DIRECTORY} ]; then
-  echo "Downloading dotfiles..."
+  msg "${INFO} Downloading dotfiles..."
   mkdir ${DOT_DIRECTORY}
 
   if has "git"; then
@@ -49,7 +73,7 @@ if [ ! -d ${DOT_DIRECTORY} ]; then
     rm -f ${HOME}/dotfiles.tar.gz
   fi
 
-  echo $(tput setaf 2)Download dotfiles complete!. ✔︎$(tput sgr0)
+  msg "${SUCCESS} Dotfiles are downloaded!"
 fi
 
 cd ${DOT_DIRECTORY}
@@ -59,31 +83,45 @@ source ./lib/dein.sh
 source ./lib/powerline.sh
 
 deploy() {
+  msg "${INFO} Deploying dotfiles..."
   for f in .??*
   do
     # Force remove the vim directory if it's already there
     [ -n "${OVERWRITE}" -a -e ${HOME}/${f} ] && rm -f ${HOME}/${f}
     if [ ! -e ${HOME}/${f} ]; then
       # If you have ignore files, add file/directory name here
-      [[ ${f} = ".git" ]] && continue
-      [[ ${f} = ".gitignore" ]] && continue
+      [[ ${f} == ".git" ]] && continue
+      [[ ${f} == ".gitignore" ]] && continue
       ln -snfv ${DOT_DIRECTORY}/${f} ${HOME}/${f}
     fi
   done
 
-  echo $(tput setaf 2)Deploy dotfiles complete!. ✔︎$(tput sgr0)
+  msg "${SUCCESS} Dotfiles are deployed!"
 }
 
 init() {
-  case ${OSTYPE} in
-    darwin*)
-      run_brew
-      ;;
-    *)
-      echo $(tput setaf 1)Working only OSX !!$(tput sgr0)
-      exit 1
-      ;;
-  esac
+  msg "${INFO} Initializing dotfiles..."
+  if has "brew"; then
+    msg "${SKIP} Install Homebrew"
+    run_brew
+  else
+    BREW_INSTALL_MSG="${WARNING} This environment is not installed 'brew'"
+    case ${OSTYPE} in
+      darwin*)
+        msg "${INFO} Installing Homebrew..."
+        ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+        run_brew
+        ;;
+      linux*)
+        msg "${BREW_INSTALL_MSG}\nGet Here! ==> ${ESC}4${ESCEND}http://linuxbrew.sh/${ESCOFF}"
+        return 0
+        ;;
+      *)
+        msg "${FAILED} This dotfiles do not support ${OSTYPE}"
+        return 0;
+        ;;
+    esac
+  fi
 
   run_yadr
   run_dein
@@ -118,7 +156,7 @@ init() {
   #  curl https://sh.rustup.rs -sSf | sh -s -- -y
   #fi
 
-  echo "$(tput setaf 2)Initialize complete!. ✔︎$(tput sgr0)"
+  msg "${SUCESS} Dotfiles Initialized!"
 }
 
 command=$1

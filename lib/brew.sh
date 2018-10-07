@@ -1,20 +1,15 @@
 #!/bin/bash
 run_brew() {
   if has "brew"; then
-    echo "$(tput setaf 2)Already installed Homebrew ✔︎$(tput sgr0)"
-  else
-    echo "Installing Homebrew..."
-    ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-  fi
-
-  if has "brew"; then
-    echo "Updating Homebrew..."
+    msg "${INFO} Updating Homebrew..."
     brew update && brew upgrade
-    [[ $? ]] && echo "$(tput setaf 2)Update Homebrew complete. ✔︎$(tput sgr0)"
+    [[ $? ]] && msg "${SUCCESS} Homebrew is updated!"
 
-    brew tap 'caskroom/cask'
-    brew tap 'caskroom/fonts'
-    brew tap 'sanemat/font'
+    if [[ ${OSTYPE} == "darwin"* ]]; then
+      brew tap 'caskroom/cask'
+      brew tap 'caskroom/fonts'
+      brew tap 'sanemat/font'
+    fi
 
     local list_formulae
     local -a missing_formulae
