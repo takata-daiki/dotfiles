@@ -101,30 +101,12 @@ deploy() {
 
 init() {
   msg "${INFO} Initializing dotfiles..."
-  if has "brew"; then
-    msg "${SKIP} Install Homebrew"
-    run_brew
-  else
-    BREW_INSTALL_MSG="${WARNING} This environment is not installed 'brew'"
-    case ${OSTYPE} in
-      darwin*)
-        msg "${INFO} Installing Homebrew..."
-        ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-        run_brew
-        ;;
-      linux*)
-        msg "${BREW_INSTALL_MSG}\nGet Here! ==> ${ESC}4${ESCEND}http://linuxbrew.sh/${ESCOFF}"
-        return 0
-        ;;
-      *)
-        msg "${FAILED} This dotfiles do not support ${OSTYPE}"
-        return 0;
-        ;;
-    esac
-  fi
-
-  run_yadr
-  run_dein
+  run_brew
+  exit 0
+  # run_yadr
+  # run_dein
+  run_fisher
+  run_tpm
   run_powerline
 
   [ ${SHELL} != "/bin/zsh"  ] && chsh -s /bin/zsh
@@ -156,7 +138,7 @@ init() {
   #  curl https://sh.rustup.rs -sSf | sh -s -- -y
   #fi
 
-  msg "${SUCESS} Dotfiles Initialized!"
+  msg "${SUCESS} Dotfiles are initialized!"
 }
 
 command=$1
