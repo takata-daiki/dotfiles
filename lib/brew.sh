@@ -35,7 +35,7 @@ run_brew() {
         ;;
       linux*)
         msg "${INFO} Installing Linuxbrew..."
-        sh -c "$(curl -fsSL https://raw.githubusercontent.com/Linuxbrew/install/master/install.sh)"
+        sh -c "$(curl -fsSL https://raw.githubusercontent.com/Linuxbrew/install/master/install)"
         echo "export PATH=$(brew --prefix)/bin:$(brew --prefix)/.linuxbrew/sbin:$PATH" >> ${HOME}/.bashrc
         sed -i -e 's/LC_ALL="en_US.UTF-8"/LC_ALL="ja_JP.UTF-8"/g' $(brew --prefix)/Library/Homebrew/brew.sh
         brew install hello
