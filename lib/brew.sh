@@ -39,7 +39,7 @@ run_brew() {
         test -d ~/.linuxbrew && PATH="$HOME/.linuxbrew/bin:$HOME/.linuxbrew/sbin:$PATH"
         test -d /home/linuxbrew/.linuxbrew && PATH="/home/linuxbrew/.linuxbrew/bin:/home/linuxbrew/.linuxbrew/sbin:$PATH"
         echo "export PATH=$/bin:${HOME}/.linuxbrew/sbin:$PATH" >> ${HOME}/.bashrc
-        sed -i -e 's/LC_ALL="en_US.UTF-8"/LC_ALL="ja_JP.UTF-8"/g' $(brew --prefix)/Library/Homebrew/brew.sh
+        sed -i -e 's/LC_ALL="en_US.UTF-8"/LC_ALL="ja_JP.UTF-8"/g' $(brew --prefix)/Homebrew/Library/Homebrew/brew.sh
         brew install hello
         msg "${SUCCESS} Linuxbrew is installed!"
 
