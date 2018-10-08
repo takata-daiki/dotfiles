@@ -78,12 +78,12 @@ if [ ! -d ${DOT_DIRECTORY} ]; then
 fi
 
 cd ${DOT_DIRECTORY}
-source ./lib/brew
-source ./lib/apt-get
-source ./lib/tpm
-source ./lib/anyenv
-source ./lib/spacevim
-source ./lib/fisher
+source ./lib/brew.sh
+source ./lib/apt-get.sh
+source ./lib/tpm.sh
+source ./lib/anyenv.sh
+source ./lib/spacevim.sh
+source ./lib/fisher.sh
 
 deploy() {
   for f in .??*

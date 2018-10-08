@@ -7,8 +7,6 @@ run_apt() {
 
   sudo apt install -y language-pack-ja
   sudo update-locale LANG=ja_JP.UTF-8
-  sudo apt install -y software-properties-common
-  sudo apt install -y python-software-properties
   sudo apt update && sudo apt upgrade -y
   [[ $? ]] && scc "Update Packages complete! ✔"
 
@@ -19,13 +17,14 @@ run_apt() {
     'fonts-powerline'
     'gcc'
     'git'
+    'neovim'
     'peco'
     'subversion'
     'tmux'
     'tree'
     'vim'
     'wget'
-    'xcilp'
+    'xclip'
   )
 
   local installed=$(apt list --installed >&1 | grep -v deinstall | awk -F/ '{print $1}')

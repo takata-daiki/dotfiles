@@ -27,6 +27,7 @@ run_brew() {
     'fish'
     'gcc'
     'git'
+    'neovim'
     'peco'
     'reattach-to-user-namespace'
     'ricty --with-powerline'

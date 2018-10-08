@@ -2,7 +2,9 @@
 run_fisher() {
   if [ ! -d ${HOME}/.config/fish/functions/fisher.fish ]; then
     curl https://git.io/fisher --create-dirs -sLo ~/.config/fish/functions/fisher.fish
-    cat << EOS >> ${HOME}/.config/fish/fishfile
+  fi
+
+  cat << EOS >> ${HOME}/.config/fish/fishfile
 0rax/fish-bd
 edc/bass
 fisherman/fzf
@@ -11,7 +13,8 @@ oh-my-fish/peco
 oh-my-fish/plugin-expand
 oh-my-fish/theme-bobthefish
 EOS
-    cat << EOS >> ${HOME}/.config/fish/config.fish
+
+  cat << EOS >> ${HOME}/.config/fish/config.fish
 # turn on vi mode when the shell starts
 fish_vi_key_bindings
 fish_vi_cursor
@@ -23,13 +26,13 @@ end
 
 # bootstrap installation
 if not functions -q fisher
-    echo "Installing fisher for the first time..." >&2
-    set -q XDG_CONFIG_HOME; or set XDG_CONFIG_HOME ~/.config
-    curl https://git.io/fisher --create-dirs -sLo \$XDG_CONFIG_HOME/fish/functions/fisher.fish
-    fisher
+  echo "Installing fisher for the first time..." >&2
+  set -q XDG_CONFIG_HOME; or set XDG_CONFIG_HOME ~/.config
+  curl https://git.io/fisher --create-dirs -sLo \$XDG_CONFIG_HOME/fish/functions/fisher.fish
+  fisher
 end
 EOS
+
   exec ${SHELL} -l
   fisher
-  fi
 }
