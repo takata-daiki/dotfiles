@@ -5,24 +5,24 @@ DOT_DIRECTORY="${HOME}/dotfiles"
 DOT_TARBALL="https://github.com/takata-daiki/dotfiles/tarball/master"
 REMOTE_URL="git@github.com:takata-daiki/dotfiles.git"
 
-ESC="\033["
-ESCEND=m
-ESCOFF="\033[0m"
+RED="$(tput setaf 1)"
+GRN="$(tput setaf 2)"
+YLW="$(tput setaf 3)"
+RST="$(tput sgr0)"
 
-SUCCESS="${ESC}32${ESCEND}Success${ESCOFF}"
-INFO="${ESC}36${ESCEND}Info...${ESCOFF}"
-SKIP="${ESC}34${ESCEND}Skip...${ESCOFF}"
-WARNING="${ESC}33${ESCEND}Warning${ESCOFF}"
-FAILED="${ESC}31${ESCEND}FAILED!${ESCOFF}"
-
-function msg() {
+err() {
   local MESSAGE=$(echo "$@" | sed -e "s/\\\n/\n                              /g")
-  echo -e "[$(date +'%Y-%m-%d %H:%M:%S')] ${MESSAGE}" >&1
+  echo -e "${RED}${MESSAGE}${RST}" >&2
 }
 
-function err() {
+scc() {
   local MESSAGE=$(echo "$@" | sed -e "s/\\\n/\n                              /g")
-  echo -e "[$(date +'%Y-%m-%d %H:%M:%S')] ${FAILED} $*" >&2
+  echo -e "${GRN}${MESSAGE}${RST}" >&1
+}
+
+wrn() {
+  local MESSAGE=$(echo "$@" | sed -e "s/\\\n/\n                              /g")
+  echo -e "${YLW}${MESSAGE}${RST}" >&1
 }
 
 has() {
@@ -48,7 +48,8 @@ EOF
   exit 1
 }
 
-while getopts :f:h opt; do
+while getopts :f:h opt
+do
   case ${opt} in
     f)
       OVERWRITE=true
@@ -62,7 +63,7 @@ shift $((OPTIND - 1))
 
 # If missing, download and extract the dotfiles repository
 if [ ! -d ${DOT_DIRECTORY} ]; then
-  msg "${INFO} Downloading dotfiles..."
+  echo "Downloading dotfiles..."
   mkdir ${DOT_DIRECTORY}
 
   if has "git"; then
@@ -73,7 +74,7 @@ if [ ! -d ${DOT_DIRECTORY} ]; then
     rm -f ${HOME}/dotfiles.tar.gz
   fi
 
-  msg "${SUCCESS} Dotfiles are downloaded!"
+  scc "Download dotfiles completed! ✔"
 fi
 
 cd ${DOT_DIRECTORY}
@@ -83,7 +84,6 @@ source ./lib/dein.sh
 source ./lib/powerline.sh
 
 deploy() {
-  msg "${INFO} Deploying dotfiles..."
   for f in .??*
   do
     # Force remove the vim directory if it's already there
@@ -96,20 +96,21 @@ deploy() {
     fi
   done
 
-  msg "${SUCCESS} Dotfiles are deployed!"
+  scc "Deploy dotfiles completed! ✔"
 }
 
 init() {
-  msg "${INFO} Initializing dotfiles..."
   run_brew
-  exit 0
+  # echo "/home/${USER}/.linuxbrew/bin/fish" | sudo tee -a /etc/shells
+  # [ ${SHELL} != "/home/${USER}/.linuxbrew/bin/fish"  ] && chsh -s /home/${USER}/.linuxbrew/bin/fish
+
   # run_yadr
   # run_dein
-  run_fisher
-  run_tpm
-  run_powerline
+  # run_fisher
+  # run_tpm
+  # run_powerline
 
-  [ ${SHELL} != "/bin/zsh"  ] && chsh -s /bin/zsh
+  # [ ${SHELL} != "/bin/zsh"  ] && chsh -s /bin/zsh
 
   #if [ ! -d ${HOME}/.anyenv ]; then
   #  git clone https://github.com/riywo/anyenv ~/.anyenv
@@ -121,7 +122,7 @@ init() {
   #  exec $SHELL -l
   #fi
 
-  [ ! -d ${HOME}/.tmux/plugins/tpm ] && git clone https://github.com/tmux-plugins/tpm ${HOME}/.tmux/plugins/tpm
+  # [ ! -d ${HOME}/.tmux/plugins/tpm ] && git clone https://github.com/tmux-plugins/tpm ${HOME}/.tmux/plugins/tpm
 
   set +e
   #if has "pyenv"; then
@@ -138,7 +139,7 @@ init() {
   #  curl https://sh.rustup.rs -sSf | sh -s -- -y
   #fi
 
-  msg "${SUCESS} Dotfiles are initialized!"
+  scc "Initialize dotfiles completed! ✔"
 }
 
 command=$1
@@ -148,7 +149,7 @@ case $command in
   deploy)
     deploy
     ;;
-  init)
+  init*)
     init
     ;;
   *)
