@@ -5,12 +5,11 @@ fish (with fisherman) + tmux (with tpm) + spacevim
 The minimal dotfiles for OS X / Ubuntu
 
 Copyright (c) 2018 Shinichi Okamoto
-
 https://github.com/okamos/dotfiles
 
 ## Usage
 
-The installation step requires the [XCode Command Line Tools](https://developer.apple.com/downloads)
+The installation step in OS X requires the [XCode Command Line Tools](https://developer.apple.com/downloads)
 
 ```
 $ java -v
