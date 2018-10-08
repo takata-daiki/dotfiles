@@ -3,7 +3,7 @@ set -e
 OS="$(uname -s)"
 DOT_DIRECTORY="${HOME}/dotfiles"
 DOT_TARBALL="https://github.com/takata-daiki/dotfiles/tarball/master"
-REMOTE_URL="git@github.com:takata-daiki/dotfiles.git"
+REMOTE_URL="https://github.com/takata-daiki/dotfiles.git"
 
 RED="$(tput setaf 1)"
 GRN="$(tput setaf 2)"

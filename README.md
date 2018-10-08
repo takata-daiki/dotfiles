@@ -7,7 +7,7 @@ $ java -v
 $ xcode-select --install
 ```
 
-1. To install, run the following command:
+1. Run the following command:
 
 ```
 $ bash -c "$(curl -fsSL raw.github.com/takata-daiki/dotfiles/master/install.sh)"
