@@ -100,7 +100,19 @@ deploy() {
 }
 
 init() {
-  run_brew
+  case ${OSTYPE} in
+    darwin*)
+      run_brew
+      ;;
+    linux*)
+      run_apt
+      ;;
+    *)
+      err "Working only OSX / Ubuntu!!"
+      exit 1;
+      ;;
+    esac
+
   # echo "/home/${USER}/.linuxbrew/bin/fish" | sudo tee -a /etc/shells
   # [ ${SHELL} != "/home/${USER}/.linuxbrew/bin/fish"  ] && chsh -s /home/${USER}/.linuxbrew/bin/fish
 
