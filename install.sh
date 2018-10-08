@@ -31,7 +31,7 @@ has() {
 
 usage() {
   name=`basename $0`
-  cat <<EOF
+  cat << EOS
 
 Usage:  $name [OPTIONS] COMMAND
 
@@ -43,8 +43,8 @@ Commands:
   deploy  Create symlink to home directory
   init    Setup environment settings
 
-To complete this dotfiles, run './$name init' then './$name deploy'.
-EOF
+To complete this dotfiles, run '~/dotfiles/install.sh init' -> '~/dotfiles/install.sh deploy'.
+EOS
   exit 1
 }
 
@@ -78,10 +78,12 @@ if [ ! -d ${DOT_DIRECTORY} ]; then
 fi
 
 cd ${DOT_DIRECTORY}
-source ./lib/brew.sh
-source ./lib/yadr.sh
-source ./lib/dein.sh
-source ./lib/powerline.sh
+source ./lib/brew
+source ./lib/apt-get
+source ./lib/tpm
+source ./lib/anyenv
+source ./lib/spacevim
+source ./lib/fisher
 
 deploy() {
   for f in .??*
@@ -103,6 +105,7 @@ init() {
   case ${OSTYPE} in
     darwin*)
       run_brew
+      echo "/usr/local/bin/fish" | sudo tee -a /etc/shells
       ;;
     linux*)
       run_apt
@@ -111,45 +114,14 @@ init() {
       err "Working only OSX / Ubuntu!!"
       exit 1;
       ;;
-    esac
+  esac
+  echo '' >> ${HOME}/.profile
+  echo 'exec fish' >> ${HOME}/.profile
 
-  # echo "/home/${USER}/.linuxbrew/bin/fish" | sudo tee -a /etc/shells
-  # [ ${SHELL} != "/home/${USER}/.linuxbrew/bin/fish"  ] && chsh -s /home/${USER}/.linuxbrew/bin/fish
-
-  # run_yadr
-  # run_dein
-  # run_fisher
-  # run_tpm
-  # run_powerline
-
-  # [ ${SHELL} != "/bin/zsh"  ] && chsh -s /bin/zsh
-
-  #if [ ! -d ${HOME}/.anyenv ]; then
-  #  git clone https://github.com/riywo/anyenv ~/.anyenv
-  #  anyenv install goenv
-  #  anyenv install rbenv
-  #  anyenv install pyenv
-  #  anyenv install phpenv
-  #  anyenv install ndenv
-  #  exec $SHELL -l
-  #fi
-
-  # [ ! -d ${HOME}/.tmux/plugins/tpm ] && git clone https://github.com/tmux-plugins/tpm ${HOME}/.tmux/plugins/tpm
-
-  set +e
-  #if has "pyenv"; then
-  #  [ ! -d $(pyenv root)/plugins/pyenv-virtualenv ] && git clone https://github.com/yyuu/pyenv-virtualenv $(pyenv root)/plugins/pyenv-virtualenv
-  #  # pyenv virtualenv -f ${latest} neovim3
-  #  # pyenv activate neovim3
-  #  # pip install neovim
-  #fi
-  #if has "rbenv"; then
-  #  [ ! -d $(rbenv root)/plugins/rbenv-default-gems ] && git clone -q https://github.com/rbenv/rbenv-default-gems.git $(rbenv root)/plugins/rbenv-default-gems
-  #  [ ! -e $(rbenv root)/default-gems ] && cp ${DOT_DIRECTORY}/default-gems $(rbenv root)/default-gems
-  #fi
-  #if [ ! -d $HOME/.cargo ]; then
-  #  curl https://sh.rustup.rs -sSf | sh -s -- -y
-  #fi
+  run_tpm
+  run_anyenv
+  run_spacevim
+  run_fisher
 
   scc "Initialize dotfiles completed! ✔"
 }
