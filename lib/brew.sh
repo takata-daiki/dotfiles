@@ -44,7 +44,7 @@ run_brew() {
     if [[ -z `echo "${installed}" | grep "^${formula}$"` ]]; then
       missing_formulae=("${missing_formulae[@]}" "${desired_formulae[$index]}")
     else
-      scc "Already installed ${formula}"
+      scc "Already installed ${formula} ✔"
       [[ "${formula}" == "ricty --with-powerline" ]] && local installed_ricty=true
     fi
   done
@@ -83,7 +83,7 @@ run_brew() {
     if [[ -z `echo "${installed}" | grep "^${formula}$"` ]]; then
       missing_formulae=("${missing_formulae[@]}" "${desired_formulae[$index]}")
     else
-      msg "${SKIP} Install ${formula}"
+      scc "Already installed ${formula} ✔"
     fi
   done
 
