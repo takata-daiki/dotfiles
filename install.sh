@@ -3,26 +3,26 @@ set -e
 OS="$(uname -s)"
 DOT_DIRECTORY="${HOME}/dotfiles"
 DOT_TARBALL="https://github.com/takata-daiki/dotfiles/tarball/master"
-REMOTE_URL="git@github.com:takata-daiki/dotfiles.git"
+REMOTE_URL="https://github.com/takata-daiki/dotfiles.git"
 
-ESC="\033["
-ESCEND=m
-ESCOFF="\033[0m"
+RED="$(tput setaf 1)"
+GRN="$(tput setaf 2)"
+YLW="$(tput setaf 3)"
+RST="$(tput sgr0)"
 
-SUCCESS="${ESC}32${ESCEND}Success${ESCOFF}"
-INFO="${ESC}36${ESCEND}Info...${ESCOFF}"
-SKIP="${ESC}34${ESCEND}Skip...${ESCOFF}"
-WARNING="${ESC}33${ESCEND}Warning${ESCOFF}"
-FAILED="${ESC}31${ESCEND}FAILED!${ESCOFF}"
-
-function msg() {
+err() {
   local MESSAGE=$(echo "$@" | sed -e "s/\\\n/\n                              /g")
-  echo -e "[$(date +'%Y-%m-%d %H:%M:%S')] ${MESSAGE}" >&1
+  echo -e "${RED}${MESSAGE}${RST}" >&2
 }
 
-function err() {
+scc() {
   local MESSAGE=$(echo "$@" | sed -e "s/\\\n/\n                              /g")
-  echo -e "[$(date +'%Y-%m-%d %H:%M:%S')] ${FAILED} $*" >&2
+  echo -e "${GRN}${MESSAGE}${RST}" >&1
+}
+
+wrn() {
+  local MESSAGE=$(echo "$@" | sed -e "s/\\\n/\n                              /g")
+  echo -e "${YLW}${MESSAGE}${RST}" >&1
 }
 
 has() {
@@ -31,7 +31,7 @@ has() {
 
 usage() {
   name=`basename $0`
-  cat <<EOF
+  cat << EOS
 
 Usage:  $name [OPTIONS] COMMAND
 
@@ -43,12 +43,13 @@ Commands:
   deploy  Create symlink to home directory
   init    Setup environment settings
 
-To complete this dotfiles, run './$name init' then './$name deploy'.
-EOF
+To complete this dotfiles, run '~/dotfiles/install.sh init' -> '~/dotfiles/install.sh deploy'.
+EOS
   exit 1
 }
 
-while getopts :f:h opt; do
+while getopts :f:h opt
+do
   case ${opt} in
     f)
       OVERWRITE=true
@@ -62,7 +63,7 @@ shift $((OPTIND - 1))
 
 # If missing, download and extract the dotfiles repository
 if [ ! -d ${DOT_DIRECTORY} ]; then
-  msg "${INFO} Downloading dotfiles..."
+  echo "Downloading dotfiles..."
   mkdir ${DOT_DIRECTORY}
 
   if has "git"; then
@@ -73,17 +74,18 @@ if [ ! -d ${DOT_DIRECTORY} ]; then
     rm -f ${HOME}/dotfiles.tar.gz
   fi
 
-  msg "${SUCCESS} Dotfiles are downloaded!"
+  scc "Download dotfiles completed! ✔"
 fi
 
 cd ${DOT_DIRECTORY}
-source ./lib/brew.sh
-source ./lib/yadr.sh
-source ./lib/dein.sh
-source ./lib/powerline.sh
+source ./lib/brew
+source ./lib/apt-get
+source ./lib/tpm
+source ./lib/anyenv
+source ./lib/spacevim
+source ./lib/fisher
 
 deploy() {
-  msg "${INFO} Deploying dotfiles..."
   for f in .??*
   do
     # Force remove the vim directory if it's already there
@@ -96,67 +98,32 @@ deploy() {
     fi
   done
 
-  msg "${SUCCESS} Dotfiles are deployed!"
+  scc "Deploy dotfiles completed! ✔"
 }
 
 init() {
-  msg "${INFO} Initializing dotfiles..."
-  if has "brew"; then
-    msg "${SKIP} Install Homebrew"
-    run_brew
-  else
-    BREW_INSTALL_MSG="${WARNING} This environment is not installed 'brew'"
-    case ${OSTYPE} in
-      darwin*)
-        msg "${INFO} Installing Homebrew..."
-        ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-        run_brew
-        ;;
-      linux*)
-        msg "${BREW_INSTALL_MSG}\nGet Here! ==> ${ESC}4${ESCEND}http://linuxbrew.sh/${ESCOFF}"
-        return 0
-        ;;
-      *)
-        msg "${FAILED} This dotfiles do not support ${OSTYPE}"
-        return 0;
-        ;;
-    esac
-  fi
+  case ${OSTYPE} in
+    darwin*)
+      run_brew
+      echo "/usr/local/bin/fish" | sudo tee -a /etc/shells
+      ;;
+    linux*)
+      run_apt
+      ;;
+    *)
+      err "Working only OSX / Ubuntu!!"
+      exit 1;
+      ;;
+  esac
+  echo '' >> ${HOME}/.profile
+  echo 'exec fish' >> ${HOME}/.profile
 
-  run_yadr
-  run_dein
-  run_powerline
+  run_tpm
+  run_anyenv
+  run_spacevim
+  run_fisher
 
-  [ ${SHELL} != "/bin/zsh"  ] && chsh -s /bin/zsh
-
-  #if [ ! -d ${HOME}/.anyenv ]; then
-  #  git clone https://github.com/riywo/anyenv ~/.anyenv
-  #  anyenv install goenv
-  #  anyenv install rbenv
-  #  anyenv install pyenv
-  #  anyenv install phpenv
-  #  anyenv install ndenv
-  #  exec $SHELL -l
-  #fi
-
-  [ ! -d ${HOME}/.tmux/plugins/tpm ] && git clone https://github.com/tmux-plugins/tpm ${HOME}/.tmux/plugins/tpm
-
-  set +e
-  #if has "pyenv"; then
-  #  [ ! -d $(pyenv root)/plugins/pyenv-virtualenv ] && git clone https://github.com/yyuu/pyenv-virtualenv $(pyenv root)/plugins/pyenv-virtualenv
-  #  # pyenv virtualenv -f ${latest} neovim3
-  #  # pyenv activate neovim3
-  #  # pip install neovim
-  #fi
-  #if has "rbenv"; then
-  #  [ ! -d $(rbenv root)/plugins/rbenv-default-gems ] && git clone -q https://github.com/rbenv/rbenv-default-gems.git $(rbenv root)/plugins/rbenv-default-gems
-  #  [ ! -e $(rbenv root)/default-gems ] && cp ${DOT_DIRECTORY}/default-gems $(rbenv root)/default-gems
-  #fi
-  #if [ ! -d $HOME/.cargo ]; then
-  #  curl https://sh.rustup.rs -sSf | sh -s -- -y
-  #fi
-
-  msg "${SUCESS} Dotfiles Initialized!"
+  scc "Initialize dotfiles completed! ✔"
 }
 
 command=$1
@@ -166,7 +133,7 @@ case $command in
   deploy)
     deploy
     ;;
-  init)
+  init*)
     init
     ;;
   *)
