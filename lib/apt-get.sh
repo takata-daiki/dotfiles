@@ -19,6 +19,7 @@ run_apt() {
     'git'
     'neovim'
     'peco'
+    'python3-pip'
     'subversion'
     'tmux'
     'tree'

@@ -9,7 +9,7 @@ run_fisher() {
 edc/bass
 fisherman/fzf
 fisherman/z
-oh-my-fish/peco
+oh-my-fish/plugin-peco
 oh-my-fish/plugin-expand
 oh-my-fish/theme-bobthefish
 EOS
@@ -32,7 +32,4 @@ if not functions -q fisher
   fisher
 end
 EOS
-
-  exec ${SHELL} -l
-  fisher
 }

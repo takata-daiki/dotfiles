@@ -115,14 +115,15 @@ init() {
       exit 1;
       ;;
   esac
-  echo '' >> ${HOME}/.profile
-  echo 'exec fish' >> ${HOME}/.profile
 
   run_tpm
   run_anyenv
   run_spacevim
   run_fisher
 
+  echo 'tmux' >> ${HOME}/.bashrc
+  echo 'exec fish' >> ${HOME}/.bashrc
+  exec fish && fisher
   scc "Initialize dotfiles completed! ✔"
 }
 
