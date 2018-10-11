@@ -13,9 +13,13 @@ Run the following command:
 $ bash -c "$(curl -fsSL raw.github.com/takata-daiki/dotfiles/master/install.sh)"
 ```
 
-### Custom Configuration:
+## Configuration
 
-##### Set the colorscheme "gruvbox"
+### Set powerline patched fonts
+* Check in the path "$HOME/.local/share/fonts/" -> Use "DejaVu Sans Mono"
+* Use [Ricty Diminished](https://github.com/mzyy94/RictyDiminished-for-Powerline/tree/master/powerline-fontpatched)
+
+### Set the colorscheme "gruvbox"
 * Prepare colorscheme in your terminal -> Check [gruvbox-contrib](https://github.com/morhetz/gruvbox-contrib) (if you use "Gnome", Check [gogh](https://github.com/Mayccoll/Gogh))
 * Use vim plugin "tmuxline.vim" -> Create a snapshot -> Modify your powerline in tmux
 * Run "fish_config" -> Apply your favorite theme
