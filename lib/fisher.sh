@@ -15,6 +15,8 @@ oh-my-fish/theme-bobthefish
 EOS
 
   cat << EOS >> ${HOME}/.config/fish/config.fish
+set -g theme_color_scheme gruvbox
+
 # turn on vi mode when the shell starts
 fish_vi_key_bindings
 fish_vi_cursor

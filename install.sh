@@ -121,7 +121,6 @@ init() {
   run_spacevim
   run_fisher
 
-  echo 'tmux' >> ${HOME}/.bashrc
   echo 'exec fish' >> ${HOME}/.bashrc
   exec fish && fisher
   scc "Initialize dotfiles completed! ✔"
