@@ -97,6 +97,5 @@ run_brew() {
   # cleanup
   echo "Cleanup Homebrew..."
   brew cleanup
-  brew cask cleanup
   scc "Cleanup Homebrew completed! ✔"
 }
