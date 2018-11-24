@@ -1,30 +1,6 @@
-snippet     if
-abbr        if () ...
-options     word
-  if (${1:#:condition}) ${0:TARGET}
-
-snippet     for
-abbr        for () ...
-options     word
-  for (${1:int} ${2:i} = ${3:0}; $2 < ${4}; ++$2) ${0:TARGET}
-
-snippet     for_CPP11
-abbr        for (:) ...
-options     word
-  for (${1:auto&& }${2:var} : ${3:container}) ${0:TARGET}
-
-snippet     for_reverse
-abbr        for () ...
-options     word
-  for (${1:int} ${2:i} = ${3:}; $2 >= ${4:0}; --$2) ${0:TARGET}
-
-snippet     while
-abbr        while () ...
-options     word
-  while (${1:#:condition}) ${0:TARGET}
-
 snippet     #include
 abbr        #include <bits/stdc++.h>
+alias       inc
 options     word
   #include <${1:bits/stdc++}.h>${0}
 
@@ -95,41 +71,6 @@ abbr        begin(v), end(v)
 options     word
   begin(${1}), end($1)${0}
 
-snippet     accumulate
-abbr        accumulate(begin(v), end(v), init, binary_op)
-options     word
-  accumulate(begin(${1:v}), end($1), ${2:1}${3:, [](int acc, int i) { return acc * i; \}})${0}
-
-snippet     binary_search
-abbr        binary_search(begin(v), end(v), val)
-options     word
-  binary_search(begin(${1:v}), end($1), ${2:val})${0}
-
-snippet     copy
-abbr        copy(begin(v), end(v) - 1, ostream_iterator<T>(cout, " "))
-options     head
-  copy(begin(${1:v}), end($1)${2: - 1}, ostream_iterator<${3:int}>(cout, "${4: }"));${0}
-
-snippet     lower_bound
-abbr        lower_bound(begin(v), end(v), val)
-options     word
-  lower_bound(begin(${1:v}), end($1), ${2:val})${0}
-
-snippet     upper_bound
-abbr        upper_bound(begin(v), end(v), val)
-options     word
-  upper_bound(begin(${1:v}), end($1), ${2:val})${0}
-
-snippet     memset
-abbr        memset(arr, val, sizeof(arr))
-options     word
-  memset(${1:arr}, ${2:val}, sizeof($1));${0}
-
-snippet     sort
-abbr        sort(begin(v), end(v))
-options     word
-  sort(begin(${1:v}), end($1)${2:, greater<${3:int\}>()});${0}
-
 snippet     vector
 abbr        vector<T>
 options     word
@@ -155,110 +96,25 @@ abbr        queue<T>
 options     word
   queue<${1:int}>${0}
 
+snippet     stack
+abbr        stack<T>
+options     word
+  stack<${1:int}>${0}
+
+snippet     deque
+abbr        deque<T>
+options     word
+  deque<${1:int}>${0}
+
 snippet     priority_queue
 abbr        priority_queue<T, vector<T>, greater<T> >
 options     word
   priority_queue<${1:int}${2:, vector<$1>, greater<$1> }>${0}
 
-snippet     assign
-abbr        assign
-options     word
-  assign(${1}, ${2})${0}
-
-snippet     back
-abbr        back()
-options     word
-  back()${0}
-
-snippet     begin
-abbr        begin()
-options     word
-  begin(${1})${0}
-
-snippet     end
-abbr        end()
-options     word
-  end(${1})${0}
-
-snippet     erase
-abbr        erase()
-options     word
-  erase(begin(${1:v}), end($1))${0}
-
-snippet     first
-abbr        first
-options     word
-  first${0}
-
-snippet     front
-abbr        front()
-options     word
-  front()${0}
-
 snippet     greater
 abbr        greater<int>()
 options     word
   greater<${1:int}>${2:()}${0}
-
-snippet     insert
-abbr        insert()
-options     word
-  insert(${1})${0}
-
-snippet     length
-abbr        length()
-options     word
-  length()${0}
-
-snippet     max_element
-abbr        *max_element(begin(v), end(v))
-options     word
-  *max_element(begin(${1:v}), end($1))${0}
-
-snippet     min_element
-abbr        *min_element(begin(v), end(v))
-options     word
-  *min_element(begin(${1:v}), end($1))${0}
-
-snippet     pop
-abbr        pop()
-options     word
-  pop()${0}
-
-snippet     push
-abbr        push
-options     word
-  push(${1})${0}
-
-snippet     push_back
-abbr        push_back()
-options     word
-  push_back(${1})${0}
-
-snippet     push_front
-abbr        push_front()
-options     word
-  push_front(${1})${0}
-
-snippet     resize
-abbr        resize()
-options     word
-  resize(${1})${0}
-
-snippet     second
-abbr        second
-options     word
-  second${0}
-
-snippet     size
-abbr        size()
-options     word
-  size()${0}
-
-snippet     unique
-abbr        unique()
-options     word
-  unique(begin(${1:v}), end($1))${0}
 
 snippet     m
 options     head
@@ -303,7 +159,6 @@ options     word
     return s;
   }
 
-
 snippet     split
 abbr        split(string str, char sep)
 options     word
@@ -336,25 +191,54 @@ alias       prime
 snippet     mod
 abbr        fact, factInv, modPow, modComb
 options     word
-  template<typename T> struct Mod {
-    T p;
-    vector<T> fact, factInv;
-    Mod() {}
-    Mod(T n, T p = 1e9 + 7) : p(p), fact(n + 1), factInv(n + 1) {
-      fact[0] = 1;
-      for (T i = 1; i < n + 1; ++i) fact[i] = fact[i - 1] * i % p;
-      for (T i = 0; i < n + 1; ++i) factInv[i] = modPow(fact[i], p - 2);
+  using ll = long long;
+  using uint = unsigned int;
+  template<uint MOD> struct ModInt {
+    using M = ModInt;
+    uint v;
+    ModInt() : v(0) {}
+    ModInt(ll _v) { norm(_v % MOD + MOD); }
+    M& norm(uint _v) {
+      v = (_v < MOD) ? _v : _v - MOD;
+      return *this;
     }
-    T modPow(T x, T n) {
-      if (n == 0) return 1;
-      T res = modPow(x * x % p, n / 2);
-      if (n & 1) res = res * x % p;
+    M operator+(const M x) const { return M().norm(v + x.v); }
+    M operator-(const M x) const { return M().norm(v + MOD - x.v); }
+    M operator*(const M x) const { return M().norm(ll(v) * x.v % MOD); }
+    M operator/(const M x) const { return *this * x.inv(); }
+    M& operator+=(const M x) { return *this = *this + x; }
+    M& operator-=(const M x) { return *this = *this - x; }
+    M& operator*=(const M x) { return *this = *this * x; }
+    M& operator/=(const M x) { return *this = *this / x; }
+    friend istream& operator>>(istream& input, M& x) {
+      input >> x.v, x.normalize(x.v); return input;
+    }
+    friend ostream& operator<<(ostream& output, const M& x) {
+      return output << x.v;
+    }
+    M pow(ll n) const {
+      M x(v), res(1);
+      while (n) {
+        if (n & 1) res *= x;
+        x *= x;
+        n >>= 1;
+      }
       return res;
     }
-    T modComb(T n, T k) {
-      return ((fact[n] * factInv[k]) % p * factInv[n - k]) % p;
+    M inv() const { return (*this).pow(MOD - 2); }
+
+    static vector<M> fact, finv;
+    static void build(int n) {
+      fact.assign(n + 1, 1);
+      finv.assign(n + 1, 1);
+      for (int i = 1; i < n + 1; i++) fact[i] = fact[i - 1] * M(i);
+      for (int i = 0; i < n + 1; i++) finv[i] = fact[i].inv();
     }
-  };${0}
+    static M comb(int n, int k) {
+      if (n < k || k < 0) return M(0);
+      return fact[n] * finv[n - k] * finv[k];
+    }
+  };
   //  T extGcd(T a, T b, T& x, T& y) {
   //    T d = a;
   //    if (b) {
@@ -388,6 +272,10 @@ options     word
   //    return a1 * modInv(a2 * a3 % p) % p;
   //  }
   //};
+  template<uint MOD> vector<ModInt<MOD>> ModInt<MOD>::fact = vector<ModInt<MOD>>(); 
+  template<uint MOD> vector<ModInt<MOD>> ModInt<MOD>::finv = vector<ModInt<MOD>>(); 
+  using mint = ModInt<uint(1e9 + 7)>;
+
 
 snippet     unionfind
 abbr        isSame, unite, getDiff
