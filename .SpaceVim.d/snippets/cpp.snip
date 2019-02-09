@@ -118,9 +118,11 @@ options     word
 
 snippet     m
 options     head
+  #include <bits/stdc++.h>
+  using namespace std;
+
   int main() {
-    ${0:TARGET}
-	  return 0;
+    ${0}
   }
 
 snippet     cin.tie
@@ -902,7 +904,7 @@ abbr        FordFulkerson
 alias       graph_fordfulkerson
 options     word
   struct FordFulkerson {
-    struct Edge{ int to, cap, rev; };
+    struct Edge { int to, cap, rev; };
     int n, init;
     vector<vector<Edge>> g;
     vector<bool> used;
@@ -946,10 +948,10 @@ options     word
 
 snippet     dinic
 abbr        Dinic
-alias       graph_dinic
+alias       graph_dinic, maxflow
 options     word
   struct Dinic {
-    struct Edge{ int to, cap, rev; };
+    struct Edge { int to, cap, rev; };
     int n, init;
     vector<vector<Edge>> g;
     vector<int> itr, level;
@@ -1004,6 +1006,72 @@ options     word
         while ((f = dfs(s, t, init)) > 0) flow += f;
       }
       return flow;
+    }
+  };${0}
+
+snippet     primaldual
+abbr        PrimalDual
+alias       graph_primaldual, mincostflow
+options     word
+  struct PrimalDual {
+    struct Edge { int to, cap, cost, rev; };
+    int n, init;
+    vector<vector<Edge>> g;
+    vector<int> dist, pv, pe, h;
+
+    PrimalDual() {}
+    PrimalDual(int n, int INF = 1e9)
+      : n(n), init(INF), g(n), dist(n), pv(n), pe(n) {}
+
+    void addEdge(int u, int v, int cap, int cost) {
+      int szU = g[u].size();
+      int szV = g[v].size();
+      g[u].push_back({v, cap, cost, szV});
+      g[v].push_back({u, 0, -cost, szU - 1});
+    }
+    int dijkstra(int s, int t) {
+      dist = vector<int>(n, init);
+      using Node = pair<int, int>;
+      priority_queue<Node, vector<Node>, greater<Node>> pq;
+      pq.push({dist[s] = 0, s});
+
+      while (!pq.empty()) {
+        auto d = pq.top().first;
+        auto u = pq.top().second;
+        pq.pop();
+        if (dist[u] < d) continue;
+        for (size_t i = 0; i < g[u].size(); ++i) {
+          Edge& e = g[u][i];
+          int v = e.to;
+          if (e.cap > 0 && dist[v] > dist[u] + e.cost + h[u] - h[v]) {
+            dist[v] = dist[u] + e.cost + h[u] - h[v];
+            pv[v] = u;
+            pe[v] = i;
+            pq.push({dist[v], v});
+          }
+        }
+      }
+      return dist[t];
+    }
+    int build(int s, int t, int f) {
+      int res = 0;
+      h = vector<int>(n, 0);
+      while (f > 0) {
+        if (dijkstra(s, t) == init) return -1;
+        for (int i = 0; i < n; ++i) h[i] += dist[i];
+        int flow = f;
+        for (int u = t; u != s; u = pv[u]) {
+          flow = min(flow, g[pv[u]][pe[u]].cap);
+        }
+        f -= flow;
+        res += flow * h[t];
+        for (int u = t; u != s; u = pv[u]) {
+          Edge& e = g[pv[u]][pe[u]];
+          e.cap -= flow;
+          g[u][e.rev].cap += flow;
+        }
+      }
+      return res;
     }
   };${0}
 
