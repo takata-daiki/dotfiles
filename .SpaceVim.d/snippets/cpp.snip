@@ -213,7 +213,7 @@ options     word
     M& operator*=(const M x) { return *this = *this * x; }
     M& operator/=(const M x) { return *this = *this / x; }
     friend istream& operator>>(istream& input, M& x) {
-      input >> x.v, x.normalize(x.v); return input;
+      input >> x.v, x.norm(x.v); return input;
     }
     friend ostream& operator<<(ostream& output, const M& x) {
       return output << x.v;
