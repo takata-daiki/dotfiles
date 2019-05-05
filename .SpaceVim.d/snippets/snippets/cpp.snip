@@ -1,0 +1,1119 @@
+snippet     #include
+abbr        #include <bits/stdc++.h>
+alias       inc
+options     word
+  #include <${1:bits/stdc++}.h>${0}
+
+snippet     using_namespace_std
+options     word
+abbr        using namespace std
+alias       std
+  using namespace std;${0}
+
+snippet     using_LL
+abbr        using ll = long long
+options     word
+alias       ull
+  using ll = long long;${0}
+
+snippet     using_V
+abbr        using V = vector...
+options     word
+alias       uv
+  using ${1:V} = vector<${2:int}>;${0}
+
+snippet     using_P
+abbr        using P = pair...
+options     word
+alias       up
+  using ${1:P} = pair<${2:int}, ${3:int}>;${0}
+
+snippet     using_PQ
+abbr        using PQ = priority_queue...
+options     word
+alias       upq
+  using ${1:PQ} = priority_queue<${2:int}${3:, V<$2>, greater<$2>}>;${0}
+
+snippet     const
+abbr        const T x = ...
+options     word
+  const ${1:int} ${2:INF} = ${3:1e9};
+
+snippet     cin
+abbr        cin >> ...
+options     word
+alias       in
+  cin >> ${1:TARGET};${0}
+
+snippet     cout
+abbr        cout << ... << endl;
+options     word
+alias       out
+  cout << ${1:${2:${3:TARGET\\\} << \}endl};${0}
+
+snippet     continue
+abbr        continue
+options     word
+  continue;${0}
+
+snippet     break
+abbr        break
+options     word
+  break;${0}
+
+snippet     return
+abbr        return
+options     word
+  return ${0};
+
+snippet     all
+abbr        begin(v), end(v)
+options     word
+  begin(${1}), end($1)${0}
+
+snippet     vector
+abbr        vector<T>
+options     word
+  vector<${1:int}>${0}
+
+snippet     map
+abbr        map<T1, T2>
+options     word
+  map<${1:int}, ${2:int}>${0}
+
+snippet     set
+abbr        set<T>
+options     word
+  set<${1:int}>${0}
+
+snippet     pair
+abbr        pair<T1, T2>
+options     word
+  pair<${1:int}, ${2:int}>${0}
+
+snippet     queue
+abbr        queue<T>
+options     word
+  queue<${1:int}>${0}
+
+snippet     stack
+abbr        stack<T>
+options     word
+  stack<${1:int}>${0}
+
+snippet     deque
+abbr        deque<T>
+options     word
+  deque<${1:int}>${0}
+
+snippet     priority_queue
+abbr        priority_queue<T, vector<T>, greater<T> >
+options     word
+  priority_queue<${1:int}${2:, vector<$1>, greater<$1> }>${0}
+
+snippet     greater
+abbr        greater<int>()
+options     word
+  greater<${1:int}>${2:()}${0}
+
+snippet     m
+options     head
+  #include <bits/stdc++.h>
+  using namespace std;
+
+  int main() {
+    ${0}
+  }
+
+snippet     cin.tie
+options     word
+  cin.tie(0);
+  ios::sync_with_stdio(false);
+
+snippet     debug
+abbr        debug(), overload "cout"
+options     word
+  #define debug(x) cerr << "> " << #x << "\n" << x << endl;
+
+  template<typename T1, typename T2> ostream& operator<<(ostream& s, const pair<T1, T2>& p) {
+    return s << "(" << p.first << ", " << p.second << ")";
+  }
+  template<typename T> ostream& operator<<(ostream& s, const vector<T>& v) {
+    int len = v.size();
+    for (int i = 0; i < len; ++i) {
+      s << v[i];
+      if (i < len - 1) s << "\t";
+    }
+    return s;
+  }
+  template<typename T> ostream& operator<<(ostream& s, const vector<vector<T>>& vv) {
+    int len = vv.size();
+    for (int i = 0; i < len; ++i) {
+      s << vv[i] << endl;
+    }
+    return s;
+  }
+  template<typename T1, typename T2> ostream& operator<<(ostream& s, const map<T1, T2>& m) {
+    s << "{" << endl;
+    for (auto itr = m.begin(); itr != m.end(); ++itr) {
+      s << "\t" << (*itr).first << " : " << (*itr).second << endl;
+    }
+    s << "}" << endl;
+    return s;
+  }
+
+snippet     split
+abbr        split(string str, char sep)
+options     word
+  vector<string> split(const string &str, char sep) {
+    vector<string> v;
+    stringstream ss(str);
+    string buffer;
+    while( getline(ss, buffer, sep) ) {
+      v.push_back(buffer);
+    }
+    return v;
+  }
+
+snippet     sieve
+abbr        sieve(int n)
+options     word
+alias       prime
+  vector<int> sieveOfEratosthenes(int n) {
+    vector<int> primes(n);
+    for (int i = 2; i < n; ++i) primes[i] = i;
+    for (int i = 2; i * i < n; ++i) {
+      if (primes[i]) {
+        for (int j = i * i; j < n; j += i) primes[j] = 0;
+      }
+    }
+    // primes.erase(remove(begin(primes), end(primes), 0), end(primes));
+    return primes;
+  }
+
+snippet     mod
+abbr        fact, factInv, modPow, modComb
+options     word
+  using ll = long long;
+  using uint = unsigned int;
+  template<uint MOD> struct ModInt {
+    using M = ModInt;
+    uint v;
+    ModInt() : v(0) {}
+    ModInt(ll _v) { norm(_v % MOD + MOD); }
+    M& norm(uint _v) {
+      v = (_v < MOD) ? _v : _v - MOD;
+      return *this;
+    }
+    M operator+(const M x) const { return M().norm(v + x.v); }
+    M operator-(const M x) const { return M().norm(v + MOD - x.v); }
+    M operator*(const M x) const { return M().norm(ll(v) * x.v % MOD); }
+    M operator/(const M x) const { return *this * x.inv(); }
+    M& operator+=(const M x) { return *this = *this + x; }
+    M& operator-=(const M x) { return *this = *this - x; }
+    M& operator*=(const M x) { return *this = *this * x; }
+    M& operator/=(const M x) { return *this = *this / x; }
+    friend istream& operator>>(istream& input, M& x) {
+      input >> x.v, x.normalize(x.v); return input;
+    }
+    friend ostream& operator<<(ostream& output, const M& x) {
+      return output << x.v;
+    }
+    M pow(ll n) const {
+      M x(v), res(1);
+      while (n) {
+        if (n & 1) res *= x;
+        x *= x;
+        n >>= 1;
+      }
+      return res;
+    }
+    M inv() const { return (*this).pow(MOD - 2); }
+
+    static vector<M> fact, finv;
+    static void build(int n) {
+      fact.assign(n + 1, 1);
+      finv.assign(n + 1, 1);
+      for (int i = 1; i < n + 1; i++) fact[i] = fact[i - 1] * M(i);
+      for (int i = 0; i < n + 1; i++) finv[i] = fact[i].inv();
+    }
+    static M comb(int n, int k) {
+      if (n < k || k < 0) return M(0);
+      return fact[n] * finv[n - k] * finv[k];
+    }
+  };
+  //  T extGcd(T a, T b, T& x, T& y) {
+  //    T d = a;
+  //    if (b) {
+  //      d = extGcd(b, a % b, y, x);
+  //      y -= (a / b) * x;
+  //    } else {
+  //      x = 1, y = 0;
+  //    }
+  //    return d;
+  //  }
+  //  T modInv(T a) {
+  //    T x, y;
+  //    extGcd(a, p, x, y);
+  //    return (p + x % p) % p;
+  //  }
+  //  T modFact(T n, T& e) {
+  //    e = 0;
+  //    if (!n) return 1;
+  //    T res = modFact(n / p, e);
+  //    e += n / p;
+  //    T s = (n / p % 2) ? p - fact[n % p] : fact[n % p];
+  //    return res * s % p;
+  //  }
+  //  T modComb(T n, T k) {
+  //    if (n < 0 || k < 0 || n < k) return 0;
+  //    T e1, e2, e3;
+  //    T a1 = modFact(n, e1);
+  //    T a2 = modFact(k, e2);
+  //    T a3 = modFact(n - k, e3);
+  //    if (e1 > e2 + e3) return 0;
+  //    return a1 * modInv(a2 * a3 % p) % p;
+  //  }
+  //};
+  template<uint MOD> vector<ModInt<MOD>> ModInt<MOD>::fact = vector<ModInt<MOD>>(); 
+  template<uint MOD> vector<ModInt<MOD>> ModInt<MOD>::finv = vector<ModInt<MOD>>(); 
+  using mint = ModInt<uint(1e9 + 7)>;
+
+
+snippet     unionfind
+abbr        isSame, unite, getDiff
+options     word
+  template<typename T> struct UnionFind {
+    vector<int> par, rank;
+    vector<T> wSum;
+
+    UnionFind(int n = 1, T init = 0)
+	      : par(n), rank(n, 0), wSum(n, init) {
+	    iota(begin(par), end(par), 0);
+	  }
+    int root(int x) {
+      if (par[x] == x) {
+        return x;
+      } else {
+        int r = root(par[x]);
+        wSum[x] += wSum[par[x]];
+        return par[x] = r;
+      }
+    }
+    T weight(int x) {
+      root(x);
+      return wSum[x];
+    }
+    bool isSame(int x, int y) {
+      return root(x) == root(y);
+    }
+    void unite(int x, int y, T w = 0) {
+      w += weight(x) - weight(y);
+      x = root(x);
+      y = root(y);
+      if (x == y) return;
+
+      if (rank[x] < rank[y]) swap(x, y), w = negate<T>()(w);
+      rank[x] += rank[y];
+      par[y] = x;
+      wSum[y] = w;
+    }
+    T getDiff(int x, int y) {
+      return weight(y) - weight(x);
+    }
+  };
+
+snippet     seg
+abbr        update, query
+alias       tree_seg
+options     word
+  template<typename T> struct SegmentTree {
+    using F = function<T(T, T)>;
+
+    int n;
+    T init;
+    F f;
+    vector<T> data;
+
+    SegmentTree() {}
+    SegmentTree(int n_, F f = [](T a, T b) { return min(a, b); },
+	      T init = INT_MAX, vector<T> v = vector<T>())
+	      : f(f), init(init) {
+	    n = 1;
+	    while(n < n_) n *= 2;
+	    data.assign(n * 2 - 1, init);
+	    if(n_ == v.size()) build(v);
+	  }
+    void build(vector<T> v) {
+      for (int i = 0; i < v.size(); ++i) data[i + n - 1] = v[i];
+      for (int i = n - 2; i >= 0; --i) {
+        data[i] = f(data[i * 2 + 1], data[i * 2 + 2]);
+      }
+    }
+    void update(int k, T x) {
+      k += n - 1;
+      data[k] = x;
+      while (k > 0) {
+        k = (k - 1) / 2;
+        data[k] = f(data[k * 2 + 1], data[k * 2 + 2]);
+      }
+    }
+    T query(int a, int b, int k = 0, int l = 0, int r = -1) {
+      if (r < 0) r = n;
+      if (b <= l || r <= a) return init;
+      if (a <= l && r <= b) return data[k];
+      T vl = query(a, b, k * 2 + 1, l, (l + r) / 2);
+      T vr = query(a, b, k * 2 + 2, (l + r) / 2, r);
+      return f(vl, vr);
+    }
+  };${0}
+
+snippet     lazy_seg
+abbr        build, update, query
+alias       tree_lazyseg
+options     word
+  template<typename T> constexpr function<T(T, T)> ex_assign(T initE) {
+    return [&initE](const T& x, const T& y) -> const T { return (y == initE) ? x : y; };
+  }
+  template<typename T> constexpr function<T(T, int)> ex_multiplies(T initE) {
+    return [&initE](const T& x, size_t y) -> const T { return (x == initE) ? x : x * y; };
+  }
+  template<typename T, typename E> struct LazySegmentTree {
+    using F = function<T(T, T)>;
+    using G = function<T(T, E)>;
+    using H = function<E(E, E)>;
+    using P = function<E(E, int)>;
+
+    int n;
+    T initT;
+    E initE;
+    F f;
+    G g;
+    H h;
+    P p;
+    vector<T> data;
+    vector<E> lazy;
+
+    LazySegmentTree() {}
+    LazySegmentTree(int n_, F f, G g, H h, T initT = INT_MAX, E initE = INT_MAX,
+	      vector<T> v = vector<T>(), P p = [](E a, size_t b) { ++b; return a; })
+	      : f(f), g(g), h(h), initT(initT), initE(initE), p(p) {
+	    n = 1;
+	    while (n < n_) n *= 2;
+	    data.assign(n * 2 - 1, initT);
+	    lazy.assign(n * 2 - 1, initE);
+	    if (n_ == v.size()) build(v);
+	  }
+    void build(vector<T> v) {
+      for (int i = 0; i < v.size(); ++i) data[i + n - 1] = v[i];
+      for (int i = n - 2; i >= 0; --i) {
+        data[i] = f(data[i * 2 + 1], data[i * 2 + 2]);
+      }
+    }
+    inline void eval(int len, int k) {
+      if (lazy[k] == initE) return;
+      if (k * 2 + 1 < n * 2 - 1) {
+        lazy[k * 2 + 1] = h(lazy[k * 2 + 1], lazy[k]);
+        lazy[k * 2 + 2] = h(lazy[k * 2 + 2], lazy[k]);
+      }
+      data[k] = g(data[k], p(lazy[k], len));
+      lazy[k] = initE;
+    }
+    T update(int a, int b, E x, int k = 0, int l = 0, int r = -1) {
+      if (r < 0) r = n;
+      eval(r - l, k);
+      if (b <= l || r <= a) return data[k];
+      if (a <= l && r <= b) {
+        lazy[k] = h(lazy[k], x);
+        return g(data[k], p(lazy[k], r - l));
+      }
+      T vl = update(a, b, x, k * 2 + 1, l, (l + r) / 2);
+      T vr = update(a, b, x, k * 2 + 2, (l + r) / 2, r);
+      return data[k] = f(vl, vr);
+    }
+    T query(int a, int b, int k = 0, int l = 0, int r = -1) {
+      if (r < 0) r = n;
+      eval(r - l, k);
+      if (b <= l || r <= a) return initT;
+      if (a <= l && r <= b) return data[k];
+      T vl = query(a, b, k * 2 + 1, l, (l + r) / 2);
+      T vr = query(a, b, k * 2 + 2, (l + r) / 2, r);
+      return f(vl, vr);
+    }
+  };
+  //
+  // e.g.
+  //      |     f     |   g   |   h   |   initT   | initE |   p
+  // -----+-----------+-------+-------+-----------+-------+--------
+  //  RMQ | min / max |       |       | INF / 0   |       | (mult)
+  //  RSQ | plus      |       |       | 0         |       | (mult)
+  //  RUQ |           | (ass) | (ass) |           | INF   | (mult)
+  //  RAQ |           | plus  | plus  |           | 0     | (mult)
+  //
+  //  (ass)  := ex_assign;
+  //  (mult) := ex_multiplies;
+  //
+  ${0}
+
+snippet     lazy_set
+abbr        F, G, H, P
+options     word
+  const ${1:int} initT = ${2:0};
+  const ${3:int} initE = ${4:1e9};
+  const LazySegmentTree<$1, $3>::F f = plus<$1>();
+  const LazySegmentTree<$1, $3>::G g = ex_assign<$1>(initE);
+  const LazySegmentTree<$1, $3>::H h = ex_assign<$3>(initE);
+  const LazySegmentTree<$1, $3>::P p = ex_multiplies<$3>(initE);
+
+snippet     binaryindexedtree
+abbr        ll sum(), add()
+alias       bit, tree_bit
+options     word
+  template<typename T> struct BinaryIndexedTree {
+    vector<T> bit;
+    BinaryIndexedTree(size_t n) : bit(n + 1, 0) {}
+    T sum(int k) {
+      T s = 0;
+      for (; k > 0; k -= k & -k) s += bit[k];
+      return s;
+    }
+    void add(int k, T x) {
+      for (; k <= bit.size(); k += k & -k) bit[k] += x;
+    }
+  };${0}
+
+snippet     kdtree
+abbr        KdSegmentTree, KdTree, build, addPoint, query
+alias       tree_kd
+options     word
+  template<typename T> struct KdSegmentTree {
+    using P = pair<int, int>;
+
+    int n;
+    vector<vector<T>> data;
+
+    KdSegmentTree() {}
+    KdSegmentTree(int n_, vector<T> v) {
+      n = 1;
+      while(n < n_) n *= 2;
+      data.resize(2 * n - 1);
+      build(v);
+    }
+    void build(vector<T> v) {
+      for (int i = 0; i < v.size(); ++i) data[i + n - 1].push_back(v[i]);
+      for (int i = n - 2; i >= 0; --i) {
+        int lch = i * 2 + 1;
+        int rch = i * 2 + 2;
+        data[i].resize(data[lch].size() + data[rch].size());
+        merge(begin(data[lch]), end(data[lch]), begin(data[rch]), end(data[rch]),
+            begin(data[i]));
+      }
+    }
+    void query(int a, int b, int y0, int y1, vector<int>& res, int k = 0, int l = 0, int r = -1) {
+      if (r < 0) r = n;
+      if (b <= l || r <= a) return;
+      if (a <= l && r <= b) {
+        auto lb = lower_bound(begin(data[k]), end(data[k]), P{y0, -1});
+        auto ub = upper_bound(begin(data[k]), end(data[k]), P{y1, n});
+        for (auto itr = lb; itr != ub; ++itr) {
+          res.push_back(itr->second);
+        }
+        return;
+      }
+      query(a, b, y0, y1, res, k * 2 + 1, l, (l + r) / 2);
+      query(a, b, y0, y1, res, k * 2 + 2, (l + r) / 2, r);
+    }
+  };
+
+  struct KdTree {
+    using P = pair<int, int>;
+
+    int n;
+    vector<int> xs;
+    vector<P> ys;
+    vector<pair<int, P>> ps;
+    KdSegmentTree<P> seg;
+
+    KdTree(int n) : n(n), xs(n), ys(n), ps(n) {}
+
+    void build() {
+      sort(begin(ps), end(ps));
+      for (int i = 0; i < n; ++i) tie(xs[i], ys[i]) = ps[i];
+      seg = KdSegmentTree<P>(n, ys);
+    }
+    void addPoint(int x, int y, int i) {
+      ps[i] = {x, {y, i}};
+    }
+    vector<int> query(int sx, int tx, int sy, int ty) {
+      vector<int> res;
+      int l = distance(begin(xs), lower_bound(begin(xs), end(xs), sx));
+      int r = distance(begin(xs), upper_bound(begin(xs), end(xs), tx));
+      seg.query(l, r, sy, ty, res);
+      sort(begin(res), end(res));
+      return res;
+    }
+  };${0}
+
+snippet     lowestcommonancestor
+abbr        LowestCommonAncestor
+alias       tree_lca, lca
+options     word
+  struct LowestCommonAncestor {
+    using P = pair<int, int>;
+
+    int n, time;
+    vector<vector<int>> g;
+    vector<int> num, eulerTour;
+    vector<P> depth;
+    SegmentTree<P> seg;
+
+    LowestCommonAncestor(int n)
+	      : n(n), time(0),
+	        g(n),
+	        num(n), eulerTour(n * 2 - 1),
+	        depth(n * 2 - 1) {}
+
+    void build(int r) {
+      dfs(r, r, 0);
+      SegmentTree<P>::F f = [](P a, P b) { return min(a, b); };
+      seg = SegmentTree<P>(n * 2 - 1, f, {INT_MAX, -1}, depth);
+    }
+    void addEdge(int s, int t) {
+      g[s].push_back(t);
+      g[t].push_back(s);
+    }
+    void dfs(int u, int p, int d) {
+      num[u] = time;
+      eulerTour[time] = u;
+      depth[time] = {d, time};
+      ++time;
+      for (auto&& v : g[u]) {
+        if (v != p) {
+          dfs(v, u, d + 1);
+          eulerTour[time] = u;
+          depth[time] = {d, time};
+          ++time;
+        }
+      }
+    }
+    int build(int u, int v) {
+      int i = num[u];
+      int j = num[v];
+      if (i > j) swap(i, j);
+      return eulerTour[seg.query(i, j + 1).second];
+    }
+  };${0}
+
+snippet     heavylightdecomposition
+abbr        HeavyLightDecomposition
+alias       tree_hld, hldecomposition
+options     word
+  struct HeavyLightDecomposition {
+    using P = pair<int, int>;
+    using F = function<void(int, int)>;
+
+    int n, time;
+    vector<vector<int>> g;
+    vector<int> num, next, subSize, head, par, depth, inv, chain;
+
+    HeavyLightDecomposition() {}
+    HeavyLightDecomposition(int n)
+	      : n(n), time(0),
+	        g(n),
+	        num(n, -1), next(n, -1), subSize(n, 1),
+	        head(n), par(n), depth(n), inv(n), chain(n) {}
+
+    void build(vector<int> roots = vector<int>(1, 0)) {
+      int c = 0;
+      for (auto&& r : roots) {
+        dfs(r);
+        bfs(r, c++);
+      }
+    }
+    void addEdge(int s, int t) {
+      g[s].push_back(t);
+      g[t].push_back(s);
+    }
+    void dfs(int r) {
+      stack<P, deque<P>> s;
+      par[r] = -1;
+      depth[r] = 0;
+      s.push({r, 0});
+      while (!s.empty()) {
+        int u = s.top().first;
+        int& i = s.top().second;
+        int sz = g[u].size();
+        if (i < sz) {
+          int v = g[u][i++];
+          if (v == par[u]) continue;
+          par[v] = u;
+          depth[v] = depth[u] + 1;
+          s.push({v, 0});
+        } else {
+          s.pop();
+          int mx = 0;
+          for (auto&& v : g[u]) {
+            if (v == par[u]) continue;
+            subSize[u] += subSize[v];
+            if (mx < subSize[v]) mx = subSize[v], next[u] = v;
+          }
+        }
+      }
+    }
+    void bfs(int r, int c) {
+      int& k = time;
+      queue<int> q({r});
+      while (!q.empty()) {
+        int h = q.front(); q.pop();
+        for (int u = h; u != -1; u = next[u]) {
+          chain[u] = c;
+          num[u] = k++;
+          inv[num[u]] = u;
+          head[u] = h;
+          for (auto&& v : g[u]) {
+            if (v != par[u] && v != next[u]) q.push(v);
+          }
+        }
+      }
+    }
+    int for_each_vertex(int u, int v, const F& f) {
+      while (true) {
+        if (num[u] > num[v]) swap(u, v);
+        f(max(num[head[v]], num[u]), num[v]);
+        if (head[u] != head[v]) {
+          v = par[head[v]];
+        } else {
+          break;
+        }
+      }
+    }
+    int for_each_edge(int u, int v, const F& f) {
+      while (true) {
+        if (num[u] > num[v]) swap(u, v);
+        if (head[u] != head[v]) {
+          f(num[head[v]], num[v]);
+          v = par[head[v]];
+        } else {
+          if (u != v) f(num[u] + 1, num[v]);
+          break;
+        }
+      }
+    }
+    int lca(int u, int v) {
+      while (true) {
+        if (num[u] > num[v]) swap(u, v);
+        if(head[u] == head[v]) return u;
+        v = par[head[v]];
+      }
+    }
+    int distance(int u, int v) {
+      return depth[u] + depth[v] - 2 * depth[lca(u, v)];
+    }
+  };${0}
+
+snippet     dijkstra
+abbr        Dijkstra
+alias       graph_dijkstra
+options     word
+  template<typename T> struct Dijkstra {
+    struct Edge { int to; T cost; };
+    vector<int> prev;
+    vector<vector<Edge>> g;
+    Dijkstra(int n) : prev(n, -1), g(n) {}
+
+    void addEdge(int u, int v, T w) {
+      g[u].push_back({v, w});
+      g[v].push_back({u, w});
+    }
+    vector<T> build(int s) {
+      vector<T> dist(g.size(), -1);
+      using Node = pair<T, int>;
+      priority_queue<Node, vector<Node>, greater<Node>> pq;
+      pq.push({dist[s] = 0, s});
+
+      while (!pq.empty()) {
+        auto d = pq.top().first;
+        auto u = pq.top().second;
+        pq.pop();
+        if (dist[u] < d) continue;
+        for (auto&& v : g[u]) {
+          if (dist[v.to] < 0 || dist[v.to] > dist[u] + v.cost) {
+            dist[v.to] = dist[u] + v.cost;
+            prev[v.to] = u;
+            pq.push({dist[v.to], v.to});
+          }
+        }
+      }
+      return dist;
+    }
+    vector<int> getPath(int t) {
+      vector<int> path;
+      for (; t != -1; t = prev[t]) path.push_back(t);
+      reverse(begin(path), end(path));
+      return path;
+    }
+  };${0}
+
+snippet     bellmanford
+abbr        BellmanFord
+alias       graph_bellmanford
+options     word
+  template<typename T> struct BellmanFord {
+    struct Edge { int from, to; T cost; };
+    int n;
+    vector<T> dist;
+    vector<int> hasPath;
+    vector<Edge> es;
+    BellmanFord(int n_, T INF = 1e9) : n(n_), dist(n_, INF + INF), hasPath(n_, 0) {}
+
+    void addEdge(int u, int v, T w) {
+      es.push_back({u, v, w});
+    }
+    bool build(int s) {
+      dist[s] = 0;
+      hasPath[s] = 1;
+      for (int i = 0; i < n; ++i) {
+        for (auto&& e : es) {
+          if (dist[e.to] > dist[e.from] + e.cost) {
+            dist[e.to] = dist[e.from] + e.cost;
+            hasPath[e.to] |= hasPath[e.from];
+            if (i == n - 1 && hasPath[e.to]) return false;
+          }
+        }
+      }
+      return true;
+    }
+  };${0}
+
+snippet     kruskal
+abbr        Kruskal
+alias       graph_kruskal
+options     word
+  template<typename T> struct Kruskal {
+    struct Edge { int s, t; T cost; };
+    int n;
+    vector<Edge> es;
+    Kruskal(int n = 0) : n(n) {}
+
+    void addEdge(int u, int v, T w) {
+      n = max(n, max(u, v) + 1);
+      es.push_back({u, v, w});
+    }
+    T build() {
+      UnionFind<int> uf(n);
+      sort(begin(es), end(es), [](Edge e1, Edge e2) {
+	      return e1.cost < e2.cost;
+	    });
+      T res = 0;
+      for (auto&& e : es) {
+        if (!uf.isSame(e.s, e.t)) {
+          uf.unite(e.s, e.t);
+          res += e.cost;
+        }
+      }
+      return res;
+    }
+  };${0}
+
+snippet     biconnectedcomponents
+abbr        BiconnectedComponents
+alias       graph_bcc, bcc
+options     word
+  struct BiconnectedComponents {
+    int n;
+    int time;
+    vector<vector<int>> g;
+    vector<bool> isArtPoint;
+    vector<int> num, low;
+    set<pair<int, int>> bridges;
+
+    BiconnectedComponents(int n) : n(n), time(0), g(n), num(n, -1), low(n, -1), isArtPoint(n, false) {}
+
+    void addEdge(int u, int v) {
+      g[u].push_back(v);
+      g[v].push_back(u);
+    }
+    void dfs(int u, int p) {
+      num[u] = low[u] = time++;
+      for (auto&& v : g[u]) {
+        if (num[v] == -1) {
+          dfs(v, u);
+          low[u] = min(low[u], low[v]);
+          if (num[u] <= low[v]) isArtPoint[u] = (num[u] > 0) || (num[v] > 1);
+          if (num[u] < low[v]) bridges.insert({min(u, v), max(u, v)});
+        } else if (v != p) {
+          low[u] = min(low[u], num[v]);
+        }
+      }
+    }
+    void build() {
+      for (int i = 0; i < n; ++i) {
+        if (num[i] == -1) dfs(i, -1);
+      }
+    }
+  };${0}
+
+snippet     stronglyconnectedcomponents
+abbr        StronglyConnectedComponents
+alias       graph_scc, scc
+options     word
+  struct StronglyConnectedComponents {
+    int n;
+    int time;
+    vector<vector<int>> g;
+    vector<int> num, low;
+    vector<vector<int>> scc;
+    stack<int, deque<int>> S;
+    vector<bool> inS;
+
+    StronglyConnectedComponents(int n) : n(n), g(n), num(n, -1), low(n, -1), inS(n, false) {}
+
+    void addEdge(int u, int v) {
+      g[u].push_back(v);
+    }
+    void dfs(int u) {
+      num[u] = low[u] = time++;
+      S.push(u);
+      inS[u] = true;
+      for (auto&& v : g[u]) {
+        if (num[v] == -1) {
+          dfs(v);
+          low[u] = min(low[u], low[v]);
+        } else if (inS[v]) {
+          low[u] = min(low[u], num[v]);
+        }
+      }
+      if (low[u] == num[u]) {
+        scc.push_back({});
+        while (true) {
+          int v = S.top(); S.pop();
+          inS[v] = false;
+          scc.back().push_back(v);
+          if (u == v) break;
+        }
+      }
+    }
+    void build() {
+      for (int i = 0; i < n; ++i) {
+        if (num[i] == -1) dfs(i);
+      }
+    }
+  };${0}
+
+snippet     fordfulkerson
+abbr        FordFulkerson
+alias       graph_fordfulkerson
+options     word
+  struct FordFulkerson {
+    struct Edge { int to, cap, rev; };
+    int n, init;
+    vector<vector<Edge>> g;
+    vector<bool> used;
+
+    FordFulkerson() {}
+    FordFulkerson(int n, int INF = 1e9) : n(n), g(n), init(INF) {}
+
+    void addEdge(int u, int v, int c) {
+      int szU = g[u].size();
+      int szV = g[v].size();
+      g[u].push_back({v, c, szV});
+      g[v].push_back({u, 0, szU - 1});
+    }
+    int dfs(int u, int t, int c) {
+      if (u == t) return c;
+      used[u] = true;
+      for (auto&& e : g[u]) {
+        int v = e.to;
+        if (!used[v] && e.cap > 0) {
+          int f = dfs(v, t, min(c, e.cap));
+          if (f > 0) {
+            e.cap -= f;
+            g[v][e.rev].cap += f;
+            return f;
+          }
+        }
+      }
+      return 0;
+    }
+    int build(int s, int t) {
+      int flow = 0;
+      while (true) {
+        used = vector<bool>(n, false);
+        int f = dfs(s, t, init);
+        if (f == 0) break;
+        flow += f;
+      }
+      return flow;
+    }
+  };${0}
+
+snippet     dinic
+abbr        Dinic
+alias       graph_dinic, maxflow
+options     word
+  struct Dinic {
+    struct Edge { int to, cap, rev; };
+    int n, init;
+    vector<vector<Edge>> g;
+    vector<int> itr, level;
+
+    Dinic() {}
+    Dinic(int n, int INF = 1e9) : n(n), g(n), init(INF) {}
+
+    void addEdge(int u, int v, int c) {
+      int szU = g[u].size();
+      int szV = g[v].size();
+      g[u].push_back({v, c, szV});
+      g[v].push_back({u, 0, szU - 1});
+    }
+    void bfs(int s) {
+      level = vector<int>(n, -1);
+      queue<int, deque<int>> que({s});
+      level[s] = 0;
+      while (!que.empty()) {
+        int u = que.front(); que.pop();
+        for (auto&& e : g[u]) {
+          int v = e.to;
+          if (level[v] < 0 && e.cap > 0) {
+            level[v] = level[u] + 1;
+            que.push(v);
+          }
+        }
+      }
+    }
+    int dfs(int u, int t, int c) {
+      if (u == t) return c;
+      for (int& i = itr[u]; i < g[u].size(); ++i) {
+        Edge& e = g[u][i];
+        int v = e.to;
+        if (level[u] < level[v] && e.cap > 0) {
+          int f = dfs(v, t, min(c, e.cap));
+          if (f > 0) {
+            e.cap -= f;
+            g[v][e.rev].cap += f;
+            return f;
+          }
+        }
+      }
+      return 0;
+    }
+    int build(int s, int t) {
+      int flow = 0;
+      while (true) {
+        bfs(s);
+        if (level[t] < 0) break;
+        itr = vector<int>(n, 0);
+        int f;
+        while ((f = dfs(s, t, init)) > 0) flow += f;
+      }
+      return flow;
+    }
+  };${0}
+
+snippet     primaldual
+abbr        PrimalDual
+alias       graph_primaldual, mincostflow
+options     word
+  struct PrimalDual {
+    struct Edge { int to, cap, cost, rev; };
+    int n, init;
+    vector<vector<Edge>> g;
+    vector<int> dist, pv, pe, h;
+
+    PrimalDual() {}
+    PrimalDual(int n, int INF = 1e9)
+      : n(n), init(INF), g(n), dist(n), pv(n), pe(n) {}
+
+    void addEdge(int u, int v, int cap, int cost) {
+      int szU = g[u].size();
+      int szV = g[v].size();
+      g[u].push_back({v, cap, cost, szV});
+      g[v].push_back({u, 0, -cost, szU - 1});
+    }
+    int dijkstra(int s, int t) {
+      dist = vector<int>(n, init);
+      using Node = pair<int, int>;
+      priority_queue<Node, vector<Node>, greater<Node>> pq;
+      pq.push({dist[s] = 0, s});
+
+      while (!pq.empty()) {
+        auto d = pq.top().first;
+        auto u = pq.top().second;
+        pq.pop();
+        if (dist[u] < d) continue;
+        for (size_t i = 0; i < g[u].size(); ++i) {
+          Edge& e = g[u][i];
+          int v = e.to;
+          if (e.cap > 0 && dist[v] > dist[u] + e.cost + h[u] - h[v]) {
+            dist[v] = dist[u] + e.cost + h[u] - h[v];
+            pv[v] = u;
+            pe[v] = i;
+            pq.push({dist[v], v});
+          }
+        }
+      }
+      return dist[t];
+    }
+    int build(int s, int t, int f) {
+      int res = 0;
+      h = vector<int>(n, 0);
+      while (f > 0) {
+        if (dijkstra(s, t) == init) return -1;
+        for (int i = 0; i < n; ++i) h[i] += dist[i];
+        int flow = f;
+        for (int u = t; u != s; u = pv[u]) {
+          flow = min(flow, g[pv[u]][pe[u]].cap);
+        }
+        f -= flow;
+        res += flow * h[t];
+        for (int u = t; u != s; u = pv[u]) {
+          Edge& e = g[pv[u]][pe[u]];
+          e.cap -= flow;
+          g[u][e.rev].cap += flow;
+        }
+      }
+      return res;
+    }
+  };${0}
+
+snippet     convexhull
+abbr        vector<P> convexHull(vector<P> ps)
+options     word
+  using P = complex<double>;
+
+  namespace std {
+    bool operator<(const P& a, const P& b) {
+      return (real(a) != real(b)) ? real(a) < real(b) : imag(a) < imag(b);
+    }
+  }
+
+  const double EPS = 1e-8;
+  const double INF = 1e12;
+
+  double cross(const P& a, const P& b) {
+    return imag(conj(a) * b);
+  }
+  double dot(const P& a, const P& b) {
+    return real(conj(a) * b);
+  }
+  int ccw(P a, P b, P c) {
+    b -= a; c -= a;
+    if (cross(b, c) > 0)   return +1;
+    if (cross(b, c) < 0)   return -1;
+    if (dot(b, c) < 0)     return +2;
+    if (norm(b) < norm(c)) return -2;
+    return 0;
+  }
+  vector<P> convexHull(vector<P> ps) {
+    int n = ps.size(), k = 0;
+    sort(ps.begin(), ps.end());
+    vector<P> ch(n * 2);
+    for (int i = 0; i < n; ch[k++] = ps[i++]) {
+      while (k >= 2 && ccw(ch[k - 2], ch[k - 1], ps[i]) <= 0) --k;
+    }
+    for (int i = n - 2, t = k + 1; i >= 0; ch[k++] = ps[i--]) {
+      while (k >= t && ccw(ch[k - 2], ch[k - 1], ps[i]) <= 0) --k;
+    }
+    ch.resize(k - 1);
+    return ch;
+  }${0}
