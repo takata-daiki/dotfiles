@@ -1,0 +1,67 @@
+snippet     conditional
+options     word
+  ${1:a} if (${2:condition}) else ${3:b}
+
+snippet     int()
+options     word
+  int(${1:input()})${0}
+
+snippet     float()
+options     word
+  float(${1:input()})${0}
+
+snippet     for_in_range
+options     word
+  for ${1:i} in range(${2:v})${0}
+
+snippet     for_in_zip
+options     word
+  for ${1:i}, ${2:j} in zip(${3:vi}, ${4:vj})${0}
+
+snippet     for_in_enumerate
+options     word
+  for ${1:i}, ${2:x} in enumerate(${3:v})${0}
+
+snippet     input()
+options     word
+  input()${0}
+
+snippet     add()
+options     word
+  add(${1})${0}
+
+snippet     append()
+options     word
+  append(${1})${0}
+
+snippet     join()
+options     word
+  join(${1})${0}
+
+snippet     remove()
+options     word
+  remove(${1})${0}
+
+snippet     split()
+options     word
+  split()${0}
+
+snippet     list()
+options     word
+  list(${1:map(${2:int\}, ${3:input().split()\})})${0}
+
+snippet     map()
+options     word
+  map(${1:int}, ${2:input().split()})${0}
+
+snippet     range()
+options     word
+  range(${1})${0}
+
+snippet     enumerate()
+options     word
+  enumerate(${1})${0}
+
+snippet     zip()
+options     word
+  zip(${1})${0}

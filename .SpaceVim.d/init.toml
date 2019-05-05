@@ -53,29 +53,6 @@ filetypes = [
   "python"
 ]
 
-# [[layers]]
-# name = "lang#c"
-# libclang_path = "/Library/Developer/CommandLineTools/usr/lib/libclang.dylib"
-# clang_executable = "/usr/bin/clang"
-# [layer.clang_std]
-# c = "c11"
-# cpp = "c++1z"
-# objc = "c11"
-# objcpp = "c++1z"
-
-# [[layers]]
-# name = "lang#html"
-
-# [[layers]]
-# name = "lang#markdown"
-
-# [[layers]]
-# name = "lang#python"
-# format-on-save = 1
-
-# [[layers]]
-# name = "lang#vim"
-
 [[custom_plugins]]
 name = "edkolev/tmuxline.vim"
 merged = false
