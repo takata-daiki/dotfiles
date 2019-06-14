@@ -1142,8 +1142,8 @@ options     word
     static int ccw(P a, P b, P c) {
       b -= a;
       c -= a;
-      if (b.cross(c) == P(0.0, 0.0, 0.0)) return +1;
-      if (b.cross(c) == P(0.0, 0.0, 0.0)) return -1;
+      if (b.cross(c) > P(0.0, 0.0, 0.0)) return +1;
+      if (b.cross(c) < P(0.0, 0.0, 0.0)) return -1;
       if (b.dot(c) < 0.0) return +2;
       if (b.norm() < c.norm()) return -2;
       return 0;
