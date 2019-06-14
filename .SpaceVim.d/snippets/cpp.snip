@@ -43,13 +43,13 @@ snippet     cin
 abbr        cin >> ...
 options     word
 alias       in
-  cin >> ${1:TARGET};${0}
+  cin >> ${1};${0}
 
 snippet     cout
 abbr        cout << ... << endl;
 options     word
 alias       out
-  cout << ${1:${2:${3:TARGET\\\} << \}endl};${0}
+  cout << ${1:${2:${3\\\} << \}endl};${0}
 
 snippet     continue
 abbr        continue
@@ -64,7 +64,7 @@ options     word
 snippet     return
 abbr        return
 options     word
-  return ${0};
+  return ${1};${0}
 
 snippet     all
 abbr        begin(v), end(v)
@@ -135,31 +135,35 @@ abbr        debug(), overload "cout"
 options     word
   #define debug(x) cerr << "> " << #x << "\n" << x << endl;
 
-  template<typename T1, typename T2> ostream& operator<<(ostream& s, const pair<T1, T2>& p) {
+  template <typename T1, typename T2>
+  ostream& operator<<(ostream& s, const pair<T1, T2>& p) {
     return s << "(" << p.first << ", " << p.second << ")";
   }
-  template<typename T> ostream& operator<<(ostream& s, const vector<T>& v) {
+  template <typename T>
+  ostream& operator<<(ostream& s, const vector<T>& v) {
     int len = v.size();
     for (int i = 0; i < len; ++i) {
-      s << v[i]; if (i < len - 1) s << "\t";
+      s << v[i] << ((i < len - 1) ? "\t" : "");
     }
     return s;
   }
-  template<typename T> ostream& operator<<(ostream& s, const vector<vector<T>>& vv) {
+  template <typename T>
+  ostream& operator<<(ostream& s, const vector<vector<T>>& vv) {
     int len = vv.size();
     for (int i = 0; i < len; ++i) {
       s << vv[i] << endl;
     }
     return s;
   }
-  template<typename T1, typename T2> ostream& operator<<(ostream& s, const map<T1, T2>& m) {
+  template <typename T1, typename T2>
+  ostream& operator<<(ostream& s, const map<T1, T2>& m) {
     s << "{" << endl;
     for (auto itr = m.begin(); itr != m.end(); ++itr) {
       s << "\t" << (*itr).first << " : " << (*itr).second << endl;
     }
     s << "}" << endl;
     return s;
-  }
+  }${0}
 
 snippet     split
 abbr        split(string str, char sep)
@@ -168,11 +172,20 @@ options     word
     vector<string> v;
     stringstream ss(str);
     string buffer;
-    while( getline(ss, buffer, sep) ) {
-      v.push_back(buffer);
-    }
+    while (getline(ss, buffer, sep)) v.push_back(buffer);
     return v;
-  }
+  }${0}
+
+snippet     compress
+abbr        compress(vector<int> v)
+options     word
+  map<int, int> compress(vector<int> v) {
+    map<int, int> zip;
+    for (int i = 0; i < v.size(); i++) zip[v[i]] = -1;
+    int idx = 0;
+    for (auto& p : zip) p.second = idx++;
+    return zip;
+  }${0}
 
 snippet     sieve
 abbr        sieve(int n)
@@ -188,37 +201,35 @@ alias       prime
     }
     // primes.erase(remove(begin(primes), end(primes), 0), end(primes));
     return primes;
-  }
+  }${0}
 
 snippet     mod
 abbr        fact, finv, pow, comb
 options     word
-  using ll = long long;
-  using uint = unsigned int;
-  template<uint MOD> struct ModInt {
+  template <long long MOD>
+  struct ModInt {
     using M = ModInt;
-    uint v;
-    ModInt() : v(0) {}
-    ModInt(ll _v) { norm(_v % MOD + MOD); }
-    M& norm(uint _v) {
-      v = (_v < MOD) ? _v : _v - MOD;
+    long long v;
+    ModInt(long long _v = 0) : v(_v % MOD + MOD) { norm(); }
+    M& norm() {
+      v = (v < MOD) ? v : v - MOD;
       return *this;
     }
-    M operator+(const M x) const { return M().norm(v + x.v); }
-    M operator-(const M x) const { return M().norm(v + MOD - x.v); }
-    M operator*(const M x) const { return M().norm(ll(v) * x.v % MOD); }
-    M operator/(const M x) const { return *this * x.inv(); }
-    M& operator+=(const M x) { return *this = *this + x; }
-    M& operator-=(const M x) { return *this = *this - x; }
-    M& operator*=(const M x) { return *this = *this * x; }
-    M& operator/=(const M x) { return *this = *this / x; }
+    M operator+(const M& x) const { return M(v + x.v); }
+    M operator-(const M& x) const { return M(v + MOD - x.v); }
+    M operator*(const M& x) const { return M(v * x.v % MOD); }
+    M operator/(const M& x) const { return M(v * x.inv()); }
+    M& operator+=(const M& x) { return *this = *this + x; }
+    M& operator-=(const M& x) { return *this = *this - x; }
+    M& operator*=(const M& x) { return *this = *this * x; }
+    M& operator/=(const M& x) { return *this = *this / x; }
     friend istream& operator>>(istream& input, M& x) {
-      input >> x.v, x.norm(x.v); return input;
+      return input >> x.v, x.norm(), input;
     }
     friend ostream& operator<<(ostream& output, const M& x) {
       return output << x.v;
     }
-    M pow(ll n) const {
+    M pow(long long n) const {
       M x(v), res(1);
       while (n) {
         if (n & 1) res *= x;
@@ -227,7 +238,12 @@ options     word
       }
       return res;
     }
-    M inv() const { return (*this).pow(MOD - 2); }
+    M inv() const { return this->pow(MOD - 2); }
+    // M inv() const {
+    //   int x, y;
+    //   extgcd(this->v, MOD, x, y);
+    //   return *this + M(x);
+    // }
 
     static vector<M> fact, finv;
     static void build(int n) {
@@ -240,56 +256,34 @@ options     word
       if (n < k || k < 0) return M(0);
       return fact[n] * finv[n - k] * finv[k];
     }
+    static M extgcd(int a, int b, int* x, int* y) {
+      M d(a);
+      if (b) {
+        d = extgcd(b, a % b, y, x);
+        *y -= (a / b) * *x;
+      } else {
+        *x = 1, *y = 0;
+      }
+      return d;
+    }
   };
-  //  T extGcd(T a, T b, T& x, T& y) {
-  //    T d = a;
-  //    if (b) {
-  //      d = extGcd(b, a % b, y, x);
-  //      y -= (a / b) * x;
-  //    } else {
-  //      x = 1, y = 0;
-  //    }
-  //    return d;
-  //  }
-  //  T modInv(T a) {
-  //    T x, y;
-  //    extGcd(a, p, x, y);
-  //    return (p + x % p) % p;
-  //  }
-  //  T modFact(T n, T& e) {
-  //    e = 0;
-  //    if (!n) return 1;
-  //    T res = modFact(n / p, e);
-  //    e += n / p;
-  //    T s = (n / p % 2) ? p - fact[n % p] : fact[n % p];
-  //    return res * s % p;
-  //  }
-  //  T modComb(T n, T k) {
-  //    if (n < 0 || k < 0 || n < k) return 0;
-  //    T e1, e2, e3;
-  //    T a1 = modFact(n, e1);
-  //    T a2 = modFact(k, e2);
-  //    T a3 = modFact(n - k, e3);
-  //    if (e1 > e2 + e3) return 0;
-  //    return a1 * modInv(a2 * a3 % p) % p;
-  //  }
-  //};
-  template<uint MOD> vector<ModInt<MOD>> ModInt<MOD>::fact = vector<ModInt<MOD>>(); 
-  template<uint MOD> vector<ModInt<MOD>> ModInt<MOD>::finv = vector<ModInt<MOD>>(); 
-  using mint = ModInt<uint(1e9 + 7)>;
-
+  template <long long MOD>
+  vector<ModInt<MOD>> ModInt<MOD>::fact = vector<ModInt<MOD>>();
+  template <long long MOD>
+  vector<ModInt<MOD>> ModInt<MOD>::finv = vector<ModInt<MOD>>();
+  using mint = ModInt<(long long)(1e9 + 7)>;${0}
 
 snippet     unionfind
 abbr        isSame, unite, getDiff
 options     word
-  template<typename T> struct UnionFind {
+  template <typename T>
+  struct UnionFind {
     vector<int> par, rank;
     vector<T> wSum;
 
-    UnionFind(int n = 1, T init = 0)
-	      : par(n), rank(n, 0), wSum(n, init) {
-	    iota(begin(par), end(par), 0);
-	  }
+    UnionFind(int n = 1, T init = 0) : par(n), rank(n, 0), wSum(n, init) {
+      iota(begin(par), end(par), 0);
+    }
     int root(int x) {
       if (par[x] == x) {
         return x;
@@ -303,9 +297,7 @@ options     word
       root(x);
       return wSum[x];
     }
-    bool isSame(int x, int y) {
-      return root(x) == root(y);
-    }
+    bool isSame(int x, int y) { return root(x) == root(y); }
     void unite(int x, int y, T w = 0) {
       w += weight(x) - weight(y);
       x = root(x);
@@ -317,16 +309,15 @@ options     word
       par[y] = x;
       wSum[y] = w;
     }
-    T getDiff(int x, int y) {
-      return weight(y) - weight(x);
-    }
-  };
+    T getDiff(int x, int y) { return weight(y) - weight(x); }
+  };${0}
 
 snippet     seg
 abbr        update, query
 alias       tree_seg
 options     word
-  template<typename T> struct SegmentTree {
+  template <typename T>
+  struct SegmentTree {
     using F = function<T(T, T)>;
 
     int n;
@@ -336,13 +327,13 @@ options     word
 
     SegmentTree() {}
     SegmentTree(int n_, F f = [](T a, T b) { return min(a, b); },
-	      T init = INT_MAX, vector<T> v = vector<T>())
-	      : f(f), init(init) {
-	    n = 1;
-	    while(n < n_) n *= 2;
-	    data.assign(n * 2 - 1, init);
-	    if(n_ == v.size()) build(v);
-	  }
+                T init = INT_MAX, vector<T> v = vector<T>())
+        : f(f), init(init) {
+      n = 1;
+      while (n < n_) n *= 2;
+      data.assign(n * 2 - 1, init);
+      if (n_ == v.size()) build(v);
+    }
     void build(vector<T> v) {
       for (int i = 0; i < v.size(); ++i) data[i + n - 1] = v[i];
       for (int i = n - 2; i >= 0; --i) {
@@ -371,13 +362,20 @@ snippet     lazy_seg
 abbr        update, query
 alias       tree_lazyseg
 options     word
-  template<typename T> constexpr function<T(T, T)> ex_assign(T initE) {
-    return [&initE](const T& x, const T& y) -> const T { return (y == initE) ? x : y; };
+  template <typename T>
+  constexpr function<T(T, T)> ex_assign(T initE) {
+    return [&initE](const T& x, const T& y) -> const T {
+      return (y == initE) ? x : y;
+    };
   }
-  template<typename T> constexpr function<T(T, int)> ex_multiplies(T initE) {
-    return [&initE](const T& x, size_t y) -> const T { return (x == initE) ? x : x * y; };
+  template <typename T>
+  constexpr function<T(T, int)> ex_multiplies(T initE) {
+    return [&initE](const T& x, size_t y) -> const T {
+      return (x == initE) ? x : x * y;
+    };
   }
-  template<typename T, typename E> struct LazySegmentTree {
+  template <typename T, typename E>
+  struct LazySegmentTree {
     using F = function<T(T, T)>;
     using G = function<T(T, E)>;
     using H = function<E(E, E)>;
@@ -394,15 +392,15 @@ options     word
     vector<E> lazy;
 
     LazySegmentTree() {}
-    LazySegmentTree(int n_, F f, G g, H h, T initT = INT_MAX, E initE = INT_MAX,
-	      vector<T> v = vector<T>(), P p = [](E a, size_t b) { ++b; return a; })
-	      : f(f), g(g), h(h), initT(initT), initE(initE), p(p) {
-	    n = 1;
-	    while (n < n_) n *= 2;
-	    data.assign(n * 2 - 1, initT);
-	    lazy.assign(n * 2 - 1, initE);
-	    if (n_ == v.size()) build(v);
-	  }
+    LazySegmentTree(int n_, F f, G g, H h, P p, T initT = INT_MAX,
+                    E initE = INT_MAX, vector<T> v = vector<T>())
+        : f(f), g(g), h(h), p(p), initT(initT), initE(initE) {
+      n = 1;
+      while (n < n_) n *= 2;
+      data.assign(n * 2 - 1, initT);
+      lazy.assign(n * 2 - 1, initE);
+      if (n_ == v.size()) build(v);
+    }
     void build(vector<T> v) {
       for (int i = 0; i < v.size(); ++i) data[i + n - 1] = v[i];
       for (int i = n - 2; i >= 0; --i) {
@@ -442,12 +440,12 @@ options     word
   };
   //
   // e.g.
-  //      |     f     |   g   |   h   |   initT   | initE |   p
-  // -----+-----------+-------+-------+-----------+-------+--------
-  //  RMQ | min / max |       |       | INF / 0   |       | (mult)
-  //  RSQ | plus      |       |       | 0         |       | (mult)
-  //  RUQ |           | (ass) | (ass) |           | INF   | (mult)
-  //  RAQ |           | plus  | plus  |           | 0     | (mult)
+  //      |     f     |   g   |   h   |   p    |  initT  | initE |
+  // -----+-----------+-------+-------+--------+---------+-------+
+  //  RMQ | min / max |       |       | (mult) | INF / 0 |       |
+  //  RSQ | plus      |       |       | (mult) | 0       |       |
+  //  RUQ |           | (ass) | (ass) | (mult) |         | INF   |
+  //  RAQ |           | plus  | plus  | (mult) |         | 0     |
   //
   //  (ass)  := ex_assign;
   //  (mult) := ex_multiplies;
@@ -462,13 +460,14 @@ options     word
   const LazySegmentTree<$1, $3>::F f = plus<$1>();
   const LazySegmentTree<$1, $3>::G g = ex_assign<$1>(initE);
   const LazySegmentTree<$1, $3>::H h = ex_assign<$3>(initE);
-  const LazySegmentTree<$1, $3>::P p = ex_multiplies<$3>(initE);
+  const LazySegmentTree<$1, $3>::P p = ex_multiplies<$3>(initE);${0}
 
 snippet     binaryindexedtree
 abbr        sum, add
 alias       bit, tree_bit
 options     word
-  template<typename T> struct BinaryIndexedTree {
+  template<typename T>
+  struct BinaryIndexedTree {
     vector<T> bit;
     BinaryIndexedTree(size_t n) : bit(n + 1, 0) {}
     T sum(int k) {
@@ -485,7 +484,8 @@ snippet     kdtree
 abbr        KdSegmentTree, KdTree::addPoint, KdTree::query
 alias       tree_kd
 options     word
-  template<typename T> struct KdSegmentTree {
+  template <typename T>
+  struct KdSegmentTree {
     using P = pair<int, int>;
 
     int n;
@@ -494,7 +494,7 @@ options     word
     KdSegmentTree() {}
     KdSegmentTree(int n_, vector<T> v) {
       n = 1;
-      while(n < n_) n *= 2;
+      while (n < n_) n *= 2;
       data.resize(2 * n - 1);
       build(v);
     }
@@ -505,10 +505,11 @@ options     word
         int rch = i * 2 + 2;
         data[i].resize(data[lch].size() + data[rch].size());
         merge(begin(data[lch]), end(data[lch]), begin(data[rch]), end(data[rch]),
-            begin(data[i]));
+              begin(data[i]));
       }
     }
-    void query(int a, int b, int y0, int y1, vector<int>& res, int k = 0, int l = 0, int r = -1) {
+    void query(int a, int b, int y0, int y1, vector<int>& res, int k = 0,
+               int l = 0, int r = -1) {
       if (r < 0) r = n;
       if (b <= l || r <= a) return;
       if (a <= l && r <= b) {
@@ -540,9 +541,7 @@ options     word
       for (int i = 0; i < n; ++i) tie(xs[i], ys[i]) = ps[i];
       seg = KdSegmentTree<P>(n, ys);
     }
-    void addPoint(int x, int y, int i) {
-      ps[i] = {x, {y, i}};
-    }
+    void addPoint(int x, int y, int i) { ps[i] = {x, {y, i}}; }
     vector<int> query(int sx, int tx, int sy, int ty) {
       vector<int> res;
       int l = distance(begin(xs), lower_bound(begin(xs), end(xs), sx));
@@ -714,8 +713,12 @@ snippet     dijkstra
 abbr        Dijkstra
 alias       graph_dijkstra
 options     word
-  template<typename T> struct Dijkstra {
-    struct Edge { int to; T cost; };
+  template <typename T>
+  struct Dijkstra {
+    struct Edge {
+      int to;
+      T cost;
+    };
     vector<int> prev;
     vector<vector<Edge>> g;
     Dijkstra(int n) : prev(n, -1), g(n) {}
@@ -757,17 +760,20 @@ snippet     bellmanford
 abbr        BellmanFord
 alias       graph_bellmanford
 options     word
-  template<typename T> struct BellmanFord {
-    struct Edge { int from, to; T cost; };
+  template <typename T>
+  struct BellmanFord {
+    struct Edge {
+      int from, to;
+      T cost;
+    };
     int n;
     vector<T> dist;
     vector<int> hasPath;
     vector<Edge> es;
-    BellmanFord(int n_, T INF = 1e9) : n(n_), dist(n_, INF + INF), hasPath(n_, 0) {}
+    BellmanFord(int n_, T INF = 1e9)
+        : n(n_), dist(n_, INF + INF), hasPath(n_, 0) {}
 
-    void addEdge(int u, int v, T w) {
-      es.push_back({u, v, w});
-    }
+    void addEdge(int u, int v, T w) { es.push_back({u, v, w}); }
     bool build(int s) {
       dist[s] = 0;
       hasPath[s] = 1;
@@ -788,8 +794,14 @@ snippet     kruskal
 abbr        Kruskal
 alias       graph_kruskal
 options     word
-  template<typename T> struct Kruskal {
-    struct Edge { int s, t; T cost; };
+  unionfind${1}
+
+  template <typename T>
+  struct Kruskal {
+    struct Edge {
+      int s, t;
+      T cost;
+    };
     int n;
     vector<Edge> es;
     Kruskal(int n = 0) : n(n) {}
@@ -800,9 +812,8 @@ options     word
     }
     T build() {
       UnionFind<int> uf(n);
-      sort(begin(es), end(es), [](Edge e1, Edge e2) {
-	      return e1.cost < e2.cost;
-	    });
+      sort(begin(es), end(es),
+           [](Edge e1, Edge e2) { return e1.cost < e2.cost; });
       T res = 0;
       for (auto&& e : es) {
         if (!uf.isSame(e.s, e.t)) {
@@ -1078,41 +1089,76 @@ options     word
 snippet     geometry
 abbr        cross, dot, ccw, convexHull
 options     word
-  using P = complex<double>;
-
-  namespace std {
-    bool operator<(const P& a, const P& b) {
-      return (real(a) != real(b)) ? real(a) < real(b) : imag(a) < imag(b);
+  struct Point {
+    using P = Point;
+    double EPS = 1e-10;
+    double x;
+    double y;
+    double z;
+    Point(double _x = 0.0, double _y = 0.0, double _z = 0.0)
+        : x(_x), y(_y), z(_z) {}
+    bool eq(const double& a, const double& b) const {
+      return std::abs(a - b) < EPS;
     }
-  }
-
-  const double EPS = 1e-8;
-  const double INF = 1e12;
-
-  double cross(const P& a, const P& b) {
-    return imag(conj(a) * b);
-  }
-  double dot(const P& a, const P& b) {
-    return real(conj(a) * b);
-  }
-  int ccw(P a, P b, P c) {
-    b -= a; c -= a;
-    if (cross(b, c) > 0)   return +1;
-    if (cross(b, c) < 0)   return -1;
-    if (dot(b, c) < 0)     return +2;
-    if (norm(b) < norm(c)) return -2;
-    return 0;
-  }
-  vector<P> convexHull(vector<P> ps) {
-    int n = ps.size(), k = 0;
-    sort(ps.begin(), ps.end());
-    vector<P> ch(n * 2);
-    for (int i = 0; i < n; ch[k++] = ps[i++]) {
-      while (k >= 2 && ccw(ch[k - 2], ch[k - 1], ps[i]) <= 0) --k;
+    bool lt(const double& a, const double& b) const { return a - b < -EPS; }
+    bool le(const double& a, const double& b) const { return a - b < EPS; }
+    // NOTICE: if you use 2d vector, change THIS!!
+    friend istream& operator>>(istream& input, P& p) {
+      return input >> p.x >> p.y, p.z = 0, input;
     }
-    for (int i = n - 2, t = k + 1; i >= 0; ch[k++] = ps[i--]) {
-      while (k >= t && ccw(ch[k - 2], ch[k - 1], ps[i]) <= 0) --k;
+    friend ostream& operator<<(ostream& output, const P& p) {
+      return output << '(' << p.x << ", " << p.y << ", " << p.z << ')';
     }
-    ch.resize(k - 1);
-    return ch;
-  }${0}
+    P operator+(const P& p) const { return P(x + p.x, y + p.y, z + p.z); }
+    P operator-(const P& p) const { return P(x - p.x, y - p.y, z - p.z); }
+    P operator*(const double& k) const { return P(x * k, y * k, z * k); }
+    P operator/(const double& k) const { return P(x / k, y / k, z / k); }
+    P& operator+=(const P& p) { return *this = *this + p; }
+    P& operator-=(const P& p) { return *this = *this - p; }
+    P& operator*=(const double& k) { return *this = *this * k; }
+    P& operator/=(const double& k) { return *this = *this / k; }
+    bool operator<(const P& p) const {
+      return !eq(x, p.x) ? lt(x, p.x) : !eq(y, p.y) ? lt(y, p.y) : lt(z, p.z);
+    }
+    bool operator==(const P& p) const {
+      return eq(x, p.x) && eq(y, p.y) && eq(z, p.z);
+    }
+    bool operator>(const P& p) const { return !(*this < p || *this == p); }
+    double abs() const { return sqrt(norm()); }
+    double norm() const { return x * x + y * y + z * z; };
+    double dot(const P& p) const { return x * p.x + y * p.y + z * p.z; }
+    P cross(const P& p) const {
+      double a = y * p.z - z * p.y;
+      double b = z * p.x - x * p.z;
+      double c = x * p.y - y * p.x;
+      return P(a, b, c);
+    }
+    bool isOrthogonal(const P& p) const { return eq(dot(p), 0.0); }
+    bool isParallel(const P& p) const { return cross(p) == P(0.0, 0.0, 0.0); }
+    bool intersect(const P& p1, const P& p2, const P& p3, const P& p4) const {
+      return le(P::ccw(p1, p2, p3) * P::ccw(p1, p2, p4), 0.0) &&
+             le(P::ccw(p3, p4, p1) * P::ccw(p3, p4, p2), 0.0);
+    }
+    static int ccw(P a, P b, P c) {
+      b -= a;
+      c -= a;
+      if (b.cross(c) == P(0.0, 0.0, 0.0)) return +1;
+      if (b.cross(c) == P(0.0, 0.0, 0.0)) return -1;
+      if (b.dot(c) < 0.0) return +2;
+      if (b.norm() < c.norm()) return -2;
+      return 0;
+    }
+    static vector<P> convexHull(vector<P> ps) {
+      int n = ps.size(), k = 0;
+      sort(begin(ps), end(ps));
+      vector<P> ch(n * 2);
+      for (int i = 0; i < n; ch[k++] = ps[i++]) {
+        while (k >= 2 && ccw(ch[k - 2], ch[k - 1], ps[i]) <= 0) --k;
+      }
+      for (int i = n - 2, t = k + 1; i >= 0; ch[k++] = ps[i--]) {
+        while (k >= t && ccw(ch[k - 2], ch[k - 1], ps[i]) <= 0) --k;
+      }
+      ch.resize(k - 1);
+      return ch;
+    }
+  };${0}
