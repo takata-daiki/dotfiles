@@ -8,28 +8,31 @@
 
 # All SpaceVim option below [option] section
 [options]
-    # set spacevim theme. by default colorscheme layer is not loaded,
-    # if you want to use more colorscheme, please load the colorscheme
-    # layer
-    colorscheme = "gruvbox"
-    background = "dark"
-    # Disable guicolors in basic mode, many terminal do not support 24bit
-    # true colors
-    enable_guicolors = true
-    # Disable statusline separator, if you want to use other value, please
-    # install nerd fonts
-    statusline_separator = "arrow"
-    statusline_inactive_separator = "arrow"
-    buffer_index_type = 4
-    # Display file type icon on the tabline, If you do not have nerd fonts
-    # installed, please change the value to false
-    enable_tabline_filetype_icon = true
-    # Display current mode text on statusline, by default It is disabled,
-    # only color will be changed when switch modes.
-    enable_statusline_display_mode = false
+# set spacevim theme. by default colorscheme layer is not loaded,
+# if you want to use more colorscheme, please load the colorscheme
+# layer
+colorscheme = "gruvbox"
+background = "dark"
+# Disable guicolors in basic mode, many terminal do not support 24bit
+# true colors
+enable_guicolors = true
+# Disable statusline separator, if you want to use other value, please
+# install nerd fonts
+statusline_separator = "arrow"
+statusline_inactive_separator = "arrow"
+buffer_index_type = 4
+# Display file type icon on the tabline, If you do not have nerd fonts
+# installed, please change the value to false
+enable_tabline_filetype_icon = true
+# Display current mode text on statusline, by default It is disabled,
+# only color will be changed when switch modes.
+enable_statusline_display_mode = false
 
-    bootstrap_before = "myspacevim#before"
-    bootstrap_after = "myspacevim#after"
+enable_neomake = false
+enable_ale = true
+
+bootstrap_before = "myspacevim#before"
+bootstrap_after = "myspacevim#after"
 
 # Enable autocomplete layer
 [[layers]]
@@ -50,8 +53,39 @@ name = "lsp"
 filetypes = [
   "c",
   "cpp",
-  "python"
+  # "java",
+  "javascript",
+  "python",
+  "sh"
 ]
+# [layers.override_cmd]
+# java = [
+#   "java",
+#   "-Declipse.application=org.eclipse.jdt.ls.core.id1",
+#   "-Dosgi.bundles.defaultStartLevel=4",
+#   "-Declipse.product=org.eclipse.jdt.ls.core.product",
+#   "-Dlog.protocol=true",
+#   "-Dlog.level=NONE",
+#   "-noverify",
+#   "-Xmx1G",
+#   "-jar",
+#   "/Users/daiki-tak/git/eclipse.jdt.ls/org.eclipse.jdt.ls.product/target/repository/plugins/org.eclipse.equinox.launcher_1.5.400.v20190515-0925.jar",
+#   "-configuration",
+#   "/Users/daiki-tak/git/eclipse.jdt.ls/org.eclipse.jdt.ls.product/target/repository/config_mac",
+#   "-data",
+#   "/Users/daiki-tak/.cache/javalsp",
+#   "--add-modules=ALL-SYSTEM",
+#   "--add-opens",
+#   "java.base/java.util=ALL-UNNAMED",
+#   "--add-opens",
+#   "java.base/java.lang=ALL-UNNAMED"
+# ]
+
+[[layers]]
+name = "lang#c"
+
+[[layers]]
+name = "lang#python"
 
 [[custom_plugins]]
 name = "edkolev/tmuxline.vim"
