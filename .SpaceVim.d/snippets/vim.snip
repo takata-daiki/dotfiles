@@ -1,0 +1,24 @@
+snippet     vimrc
+options     head
+  " basic
+  set backspace=indent,eol,start
+  set number
+  set mouse=a
+  syntax on
+
+  " search
+  set incsearch
+  set hlsearch
+  nnoremap <Esc><Esc> :nohlsearch<CR><ESC>
+
+  " yank -> clipboard
+  set clipboard=unnamed,autoselect
+
+  " tabs
+  set expandtab
+  set shiftwidth=2
+  set softtabstop=2
+  set smartindent
+
+  " brackets
+  inoremap {<Enter> {}<Left><CR><BS><ESC><S-o>
