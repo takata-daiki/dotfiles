@@ -1,10 +1,11 @@
 snippet     vimrc
 options     head
   " basic
+  syntax on
+  filetype plugin indent on
   set backspace=indent,eol,start
   set number
   set mouse=a
-  syntax on
 
   " search
   set incsearch
@@ -14,11 +15,13 @@ options     head
   " yank -> clipboard
   set clipboard=unnamed,autoselect
 
-  " tabs
+  " tab
+  set autoindent
+  set smartindent
   set expandtab
+  set tabstop=2
   set shiftwidth=2
   set softtabstop=2
-  set smartindent
 
-  " brackets
-  inoremap {<Enter> {}<Left><CR><BS><ESC><S-o>
+  " bracket
+  inoremap {<Enter> {}<Left><CR><ESC><S-o>
