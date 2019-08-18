@@ -130,40 +130,72 @@ options     word
   cin.tie(0);
   ios::sync_with_stdio(false);
 
-snippet     debug
-abbr        debug(), overload "cout"
+snippet     deb
 options     word
-  #define debug(x) cerr << "> " << #x << "\n" << x << endl;
+  /////////////////////////
+  #ifdef DEBUG
+  #define DEB
+  #define dump(...)                                                             \
+	  DUMPOUT << "  " << string(#__VA_ARGS__) << ": "                             \
+	          << "[" << to_string(__LINE__) << ":" << __FUNCTION__ << "]"         \
+	          << endl                                                             \
+	          << "    ",                                                          \
+	    dump_func(__VA_ARGS__)
+  #else
+  #define DEB if (false)
+  #define dump(...)
+  #endif
 
-  template <typename T1, typename T2>
-  ostream& operator<<(ostream& s, const pair<T1, T2>& p) {
-    return s << "(" << p.first << ", " << p.second << ")";
+  #define DUMPOUT cerr
+  #define LINE(v) os << "{"; for (auto itr = begin(v); itr != end(v); itr++) { os << *itr; itr++; if (itr != end(v)) os << ", "; itr--; } os << "}"
+
+  void dump_func() {
+    DUMPOUT << endl;
+  }
+  template <class Head, class... Tail>
+  void dump_func(Head &&head, Tail &&... tail) {
+    DUMPOUT << head;
+    if (sizeof...(Tail) > 0) {
+      DUMPOUT << ", ";
+    }
+    dump_func(std::move(tail)...);
+  }
+
+  // pair
+  template <typename T, typename U>
+  ostream &operator<<(ostream &os, pair<T, U> &pair_var) {
+    os << "(" << pair_var.first << ", " << pair_var.second << ")";
+    return os;
+  }
+  // vector
+  template <typename T>
+  ostream &operator<<(ostream &os, const vector<T> &vec) {
+    LINE(vec);
+    return os;
   }
   template <typename T>
-  ostream& operator<<(ostream& s, const vector<T>& v) {
-    int len = v.size();
+  ostream& operator<<(ostream &os, const vector<vector<T>> &mat) {
+    int len = mat.size();
+    os << "{" << endl;
     for (int i = 0; i < len; ++i) {
-      s << v[i] << ((i < len - 1) ? "\t" : "");
+      os << "     " << mat[i] << endl;
     }
-    return s;
+    os << "    }";
+    return os;
   }
+  // map
+  template <typename T, typename U>
+  ostream &operator<<(ostream &os, map<T, U> &map_var) {
+    LINE(map_var);
+    return os;
+  }
+  // set
   template <typename T>
-  ostream& operator<<(ostream& s, const vector<vector<T>>& vv) {
-    int len = vv.size();
-    for (int i = 0; i < len; ++i) {
-      s << vv[i] << endl;
-    }
-    return s;
+  ostream &operator<<(ostream &os, set<T> &set_var) {
+    LINE(set_var);
+    return os;
   }
-  template <typename T1, typename T2>
-  ostream& operator<<(ostream& s, const map<T1, T2>& m) {
-    s << "{" << endl;
-    for (auto itr = m.begin(); itr != m.end(); ++itr) {
-      s << "\t" << (*itr).first << " : " << (*itr).second << endl;
-    }
-    s << "}" << endl;
-    return s;
-  }${0}
+  /////////////////////////
 
 snippet     split
 abbr        split(string str, char sep)
