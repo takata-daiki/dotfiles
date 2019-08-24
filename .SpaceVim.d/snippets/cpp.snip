@@ -163,7 +163,7 @@ options     word
 
   // pair
   template <typename T, typename U>
-  ostream &operator<<(ostream &os, pair<T, U> &pair_var) {
+  ostream &operator<<(ostream &os, const pair<T, U> &pair_var) {
     os << "(" << pair_var.first << ", " << pair_var.second << ")";
     return os;
   }
@@ -185,13 +185,13 @@ options     word
   }
   // map
   template <typename T, typename U>
-  ostream &operator<<(ostream &os, map<T, U> &map_var) {
+  ostream &operator<<(ostream &os, const map<T, U> &map_var) {
     LINE(map_var);
     return os;
   }
   // set
   template <typename T>
-  ostream &operator<<(ostream &os, set<T> &set_var) {
+  ostream &operator<<(ostream &os, const set<T> &set_var) {
     LINE(set_var);
     return os;
   }
@@ -964,7 +964,7 @@ options     word
       int szU = g[u].size();
       int szV = g[v].size();
       g[u].push_back({v, c, szV});
-      g[v].push_back({u, 0, szU - 1});
+      g[v].push_back({u, 0, szU});
     }
     int dfs(int u, int t, int c) {
       if (u == t) return c;
@@ -1011,7 +1011,7 @@ options     word
       int szU = g[u].size();
       int szV = g[v].size();
       g[u].push_back({v, c, szV});
-      g[v].push_back({u, 0, szU - 1});
+      g[v].push_back({u, 0, szU});
     }
     void bfs(int s) {
       level = vector<int>(n, -1);
@@ -1075,7 +1075,7 @@ options     word
       int szU = g[u].size();
       int szV = g[v].size();
       g[u].push_back({v, cap, cost, szV});
-      g[v].push_back({u, 0, -cost, szU - 1});
+      g[v].push_back({u, 0, -cost, szU});
     }
     int dijkstra(int s, int t) {
       dist = vector<int>(n, init);
