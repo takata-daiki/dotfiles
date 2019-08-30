@@ -243,7 +243,6 @@ alias       prime
 snippet     mod
 abbr        fact, finv, pow, comb
 options     word
-  template <long long MOD>
   struct ModInt {
     using M = ModInt;
     long long v;
@@ -255,7 +254,7 @@ options     word
     M operator+(const M& x) const { return M(v + x.v); }
     M operator-(const M& x) const { return M(v + MOD - x.v); }
     M operator*(const M& x) const { return M(v * x.v % MOD); }
-    M operator/(const M& x) const { return M(v * x.inv()); }
+    M operator/(const M& x) const { return M(v * x.inv().v); }
     M& operator+=(const M& x) { return *this = *this + x; }
     M& operator-=(const M& x) { return *this = *this - x; }
     M& operator*=(const M& x) { return *this = *this * x; }
@@ -282,6 +281,7 @@ options     word
     //   return *this + M(x);
     // }
 
+    static long long MOD;
     static vector<M> fact, finv;
     static void build(int n) {
       fact.assign(n + 1, 1);
@@ -304,11 +304,9 @@ options     word
       return d;
     }
   };
-  template <long long MOD>
-  vector<ModInt<MOD>> ModInt<MOD>::fact = vector<ModInt<MOD>>();
-  template <long long MOD>
-  vector<ModInt<MOD>> ModInt<MOD>::finv = vector<ModInt<MOD>>();
-  using mint = ModInt<(long long)(1e9 + 7)>;${0}
+  vector<ModInt> ModInt::fact = vector<ModInt>();
+  vector<ModInt> ModInt::finv = vector<ModInt>();
+  long long ModInt::MOD = 1e9 + 7;${0}
 
 snippet     unionfind
 abbr        isSame, unite, getDiff
