@@ -1198,3 +1198,48 @@ options     word
     }
   };
   double Point::EPS = 1e-10;${0}
+
+snippet     rollinghash
+abbr        RollingHash
+alias       string_rollinghash
+options     word
+  struct RollingHash {
+    const static int SIZE = 2;
+    const long long mod[SIZE] = {1000000007, 1000000009};
+    const long long base[SIZE] = {1009, 1007};
+    int n;
+    vector<vector<long long>> h, pw;
+
+    RollingHash(const string& s) : n(s.length()) {
+      h.assign(SIZE, vector<long long>(n + 1, 0));
+      pw.assign(SIZE, vector<long long>(n + 1, 1));
+      for (int i = 0; i < SIZE; i++) {
+        for (int j = 0; j < n; j++) {
+          h[i][j + 1] = (h[i][j] * base[i] + s[j]) % mod[i];
+          pw[i][j + 1] = pw[i][j] * base[i] % mod[i];
+        }
+      }
+    }
+
+    int get(int l, int r, int k) {
+      return (h[k][r] - h[k][l] * pw[k][r - l] % mod[k] + mod[k]) % mod[k];
+    }
+
+    bool match(int l1, int r1, int l2, int r2) {
+      bool res = 1;
+      for (int i = 0; i < SIZE; i++) {
+        res &= (get(l1, r1, i) == get(l2, r2, i));
+      }
+      return res;
+    }
+
+    int lcp(int i, int j) {
+      int ok = 0;
+      int ng = min(n - i, n - j) + 1;
+      while (ng - ok > 1) {
+        int m = (ok + ng) / 2;
+        (match(i, i + m, j, j + m) ? ok : ng) = m;
+      }
+      return ok;
+    }
+  };
