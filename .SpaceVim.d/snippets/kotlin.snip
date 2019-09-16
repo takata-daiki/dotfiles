@@ -1,0 +1,24 @@
+snippet     m
+abbr        main
+options     head
+  fun main(args: Array<String>) {
+    ${0}
+  }
+
+snippet     s
+options     word
+  val ${1:s} = readLine()!!.toInt()${0}
+
+snippet     n
+options     word
+  val ${1:n} = readLine()!!.toInt()${0}
+
+snippet     list
+options     word
+  val ${1:list} = readLine()!!.split(" ").map { it.toInt() }${0}
+
+snippet     a
+options     word
+  val ${1:a} = IntArray(${2:n}) {
+    readLine()!!${3:.toInt()}
+  }${0}

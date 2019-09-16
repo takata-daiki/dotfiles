@@ -1204,15 +1204,15 @@ abbr        RollingHash
 alias       string_rollinghash
 options     word
   struct RollingHash {
-    const static int SIZE = 2;
-    const long long mod[SIZE] = {1000000007, 1000000009};
-    const long long base[SIZE] = {1009, 1007};
-    int n;
-    vector<vector<long long>> h, pw;
+    static constexpr int SIZE = 2;
+    static constexpr array<uint64_t, SIZE> mod = {1000000007, 1000000009};
+    static constexpr array<uint64_t, SIZE> base = {1009, 1007};
+    const int n;
+    vector<vector<unsigned>> h, pw;
 
     RollingHash(const string& s) : n(s.length()) {
-      h.assign(SIZE, vector<long long>(n + 1, 0));
-      pw.assign(SIZE, vector<long long>(n + 1, 1));
+      h.assign(SIZE, vector<unsigned>(n + 1, 0));
+      pw.assign(SIZE, vector<unsigned>(n + 1, 1));
       for (int i = 0; i < SIZE; i++) {
         for (int j = 0; j < n; j++) {
           h[i][j + 1] = (h[i][j] * base[i] + s[j]) % mod[i];
@@ -1221,16 +1221,15 @@ options     word
       }
     }
 
-    int get(int l, int r, int k) {
-      return (h[k][r] - h[k][l] * pw[k][r - l] % mod[k] + mod[k]) % mod[k];
+    inline unsigned get(int l, int r, int k) const {
+      return (h[k][r] + (mod[k] - h[k][l]) * pw[k][r - l]) % mod[k];
     }
 
-    bool match(int l1, int r1, int l2, int r2) {
-      bool res = 1;
+    bool match(int l1, int r1, int l2, int r2) const {
       for (int i = 0; i < SIZE; i++) {
-        res &= (get(l1, r1, i) == get(l2, r2, i));
+        if (get(l1, r1, i) != get(l2, r2, i)) return false;
       }
-      return res;
+      return true;
     }
 
     int lcp(int i, int j) {
@@ -1243,3 +1242,5 @@ options     word
       return ok;
     }
   };
+  constexpr array<uint64_t, RollingHash::SIZE> RollingHash::mod; 
+  constexpr array<uint64_t, RollingHash::SIZE> RollingHash::base; 
