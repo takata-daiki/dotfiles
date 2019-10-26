@@ -11,7 +11,7 @@ options     head
   " search
   set incsearch
   set hlsearch
-  nnoremap <Esc><Esc> :nohlsearch<CR><ESC>
+  nnoremap <Esc><Esc> :nohlsearch<CR>
 
   " yank -> clipboard
   set clipboard=unnamed,autoselect
@@ -24,4 +24,4 @@ options     head
   set smarttab
 
   " bracket
-  inoremap {<Enter> {}<Left><CR><ESC><S-o>
+  inoremap {<Enter> {}<Left><CR><Esc><S-o>
