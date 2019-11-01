@@ -309,42 +309,23 @@ options     word
   long long ModInt::MOD = 1e9 + 7;${0}
 
 snippet     unionfind
-abbr        isSame, unite, getDiff
+abbr        root, size, same, unite
 options     word
-  template <typename T>
   struct UnionFind {
-    vector<int> par, rank;
-    vector<T> wSum;
-
-    UnionFind(int n = 1, T init = 0) : par(n), rank(n, 0), wSum(n, init) {
-      iota(begin(par), end(par), 0);
-    }
-    int root(int x) {
-      if (par[x] == x) {
-        return x;
-      } else {
-        int r = root(par[x]);
-        wSum[x] += wSum[par[x]];
-        return par[x] = r;
-      }
-    }
-    T weight(int x) {
-      root(x);
-      return wSum[x];
-    }
-    bool isSame(int x, int y) { return root(x) == root(y); }
-    void unite(int x, int y, T w = 0) {
-      w += weight(x) - weight(y);
+    vector<int> data;
+    UnionFind(int n) : data(n, -1) {}
+    int root(int x) { return (data[x] < 0) ? x : data[x] = root(data[x]); }
+    int size(int x) { return -data[root(x)]; }
+    bool same(int x, int y) { return root(x) == root(y); }
+    bool unite(int x, int y) {
       x = root(x);
       y = root(y);
-      if (x == y) return;
-
-      if (rank[x] < rank[y]) swap(x, y), w = negate<T>()(w);
-      rank[x] += rank[y];
-      par[y] = x;
-      wSum[y] = w;
+      if (x == y) return false;
+      if (data[x] > data[y]) swap(x, y);
+      data[x] += data[y];
+      data[y] = x;
+      return true;
     }
-    T getDiff(int x, int y) { return weight(y) - weight(x); }
   };${0}
 
 snippet     seg
