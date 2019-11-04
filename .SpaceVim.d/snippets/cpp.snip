@@ -285,9 +285,9 @@ options     word
     static vector<M> fact, finv;
     static void build(int n) {
       fact.assign(n + 1, 1);
-      finv.assign(n + 1, 1);
       for (int i = 1; i < n + 1; i++) fact[i] = fact[i - 1] * M(i);
-      for (int i = 0; i < n + 1; i++) finv[i] = fact[i].inv();
+      finv.assign(n + 1, fact[n].inv());
+      for (int i = n; i > 0; i--) finv[i - 1] = finv[i] * M(i);
     }
     static M comb(int n, int k) {
       if (n < k || k < 0) return M(0);
