@@ -206,7 +206,7 @@ options     word
     string buffer;
     while (getline(ss, buffer, sep)) v.push_back(buffer);
     return v;
-  }${0}
+  }
 
 snippet     compress
 abbr        compress(vector<int> v)
@@ -222,7 +222,26 @@ options     word
       idx++;
     }
     return zip;
-  }${0}
+  }
+
+snippet     compress2d
+abbr        compress2d(int n, vector<int>& vs, vector<int>& vt)
+options     word
+  int compress2D(int n, vector<int>& vs, vector<int>& vt) {
+    vector<int> v;
+    v.push_back(-1);
+    REP(i, n) REP(d, 2) {
+      v.push_back(vs[i] + d);
+      v.push_back(vt[i] + d);
+    }
+    sort(begin(v), end(v));
+    v.erase(unique(begin(v), end(v)), end(v));
+    REP(i, n) {
+      vs[i] = lower_bound(begin(v), end(v), vs[i]) - begin(v);
+      vt[i] = lower_bound(begin(v), end(v), vt[i]) - begin(v);
+    }
+    return v.size();
+  }
 
 snippet     sieve
 abbr        sieve(int n)
@@ -238,7 +257,7 @@ alias       prime
     }
     // primes.erase(remove(begin(primes), end(primes), 0), end(primes));
     return primes;
-  }${0}
+  }
 
 snippet     mod
 abbr        fact, finv, pow, comb
@@ -306,7 +325,7 @@ options     word
   };
   vector<ModInt> ModInt::fact = vector<ModInt>();
   vector<ModInt> ModInt::finv = vector<ModInt>();
-  long long ModInt::MOD = 1e9 + 7;${0}
+  long long ModInt::MOD = 1e9 + 7;
 
 snippet     unionfind
 abbr        root, size, same, unite
@@ -326,7 +345,7 @@ options     word
       data[y] = x;
       return true;
     }
-  };${0}
+  };
 
 snippet     seg
 abbr        update, query
@@ -372,7 +391,7 @@ options     word
       T vr = query(a, b, k * 2 + 2, (l + r) / 2, r);
       return f(vl, vr);
     }
-  };${0}
+  };
 
 snippet     lazy_seg
 abbr        update, query
@@ -494,7 +513,7 @@ options     word
     void add(int k, T x) {
       for (; k <= bit.size(); k += k & -k) bit[k] += x;
     }
-  };${0}
+  };
 
 snippet     kdtree
 abbr        KdSegmentTree, KdTree::addPoint, KdTree::query
@@ -566,7 +585,7 @@ options     word
       sort(begin(res), end(res));
       return res;
     }
-  };${0}
+  };
 
 snippet     lowestcommonancestor
 abbr        LowestCommonAncestor
@@ -616,7 +635,7 @@ options     word
       if (i > j) swap(i, j);
       return eulerTour[seg.query(i, j + 1).second];
     }
-  };${0}
+  };
 
 snippet     heavylightdecomposition
 abbr        HeavyLightDecomposition
@@ -723,7 +742,7 @@ options     word
     int distance(int u, int v) {
       return depth[u] + depth[v] - 2 * depth[lca(u, v)];
     }
-  };${0}
+  };
 
 snippet     dijkstra
 abbr        Dijkstra
@@ -770,7 +789,7 @@ options     word
       reverse(begin(path), end(path));
       return path;
     }
-  };${0}
+  };
 
 snippet     bellmanford
 abbr        BellmanFord
@@ -804,7 +823,7 @@ options     word
       }
       return true;
     }
-  };${0}
+  };
 
 snippet     kruskal
 abbr        Kruskal
@@ -877,7 +896,7 @@ options     word
         if (num[i] == -1) dfs(i, -1);
       }
     }
-  };${0}
+  };
 
 snippet     stronglyconnectedcomponents
 abbr        StronglyConnectedComponents
@@ -924,7 +943,7 @@ options     word
         if (num[i] == -1) dfs(i);
       }
     }
-  };${0}
+  };
 
 snippet     fordfulkerson
 abbr        FordFulkerson
@@ -971,7 +990,7 @@ options     word
       }
       return flow;
     }
-  };${0}
+  };
 
 snippet     dinic
 abbr        Dinic
@@ -1034,7 +1053,7 @@ options     word
       }
       return flow;
     }
-  };${0}
+  };
 
 snippet     primaldual
 abbr        PrimalDual
@@ -1100,7 +1119,7 @@ options     word
       }
       return res;
     }
-  };${0}
+  };
 
 snippet     geometry
 abbr        cross, dot, ccw, convexHull
@@ -1178,7 +1197,7 @@ options     word
       return ch;
     }
   };
-  double Point::EPS = 1e-10;${0}
+  double Point::EPS = 1e-10;
 
 snippet     rollinghash
 abbr        RollingHash
